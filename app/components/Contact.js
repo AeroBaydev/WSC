@@ -128,6 +128,40 @@ export default function Contact() {
                 </div>
               </motion.div>
 
+              {/* Social Links */}
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                className="bg-white rounded-lg p-6 card-shadow"
+              >
+                <h4 className="text-gray-900 font-semibold mb-4">Connect with us</h4>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a
+                    href="https://www.instagram.com/wsc_india/#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg transition-colors"
+                    aria-label="Follow us on Instagram"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                      <path d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zm0 2h10c1.654 0 3 1.346 3 3v10c0 1.654-1.346 3-3 3H7c-1.654 0-3-1.346-3-3V7c0-1.654 1.346-3 3-3zm11 1.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3zM12 7a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6z" />
+                    </svg>
+                    Instagram
+                  </a>
+                  <a
+                    href="https://chat.whatsapp.com/DAAiwB4FF83AjxVANWt9YQ"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
+                    aria-label="Join our WhatsApp Community"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                      <path d="M20.52 3.48A11.94 11.94 0 0012 0C5.37 0 0 5.37 0 12c0 2.11.55 4.15 1.6 5.96L0 24l6.2-1.62A11.9 11.9 0 0012 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zM12 22a9.9 9.9 0 01-5.06-1.4l-.36-.21-3.66.96.98-3.56-.23-.37A9.96 9.96 0 1122 12c0 5.52-4.48 10-10 10zm5.08-6.84c-.28-.14-1.62-.8-1.87-.89-.25-.09-.43-.14-.61.14-.18.28-.7.88-.86 1.06-.16.18-.32.2-.6.07-.28-.14-1.18-.44-2.25-1.4-.83-.74-1.4-1.66-1.57-1.94-.16-.28-.02-.43.12-.57.12-.12.28-.32.41-.48.14-.16.18-.28.27-.46.09-.18.05-.34-.02-.48-.07-.14-.61-1.47-.84-2.02-.22-.53-.45-.46-.61-.46-.16 0-.34-.02-.52-.02s-.48.07-.73.34c-.25.28-.96.94-.96 2.28s.98 2.64 1.12 2.82c.14.18 1.93 2.94 4.68 4.12.65.28 1.16.45 1.56.58.66.21 1.26.18 1.74.11.53-.08 1.62-.66 1.85-1.3.23-.64.23-1.2.16-1.31-.07-.11-.25-.18-.53-.32z" />
+                    </svg>
+                    Join WhatsApp Community
+                  </a>
+                </div>
+              </motion.div>
+
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 className="bg-white rounded-lg p-6 flex items-center card-shadow"
@@ -153,17 +187,7 @@ export default function Contact() {
               <h4 className="text-xl font-bold text-gray-900 mb-4">Important Dates</h4>
               <div className="space-y-3">
                 <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
-                  <p className="text-orange-700 font-semibold text-sm">📅 Registration: 4th October 2025</p>
-                </div>
-                <div className="bg-orange-100 border border-orange-300 rounded-lg p-3">
-                  <p className="text-orange-800 font-semibold text-sm">
-                    📅 Regional Rounds: 7th & 8th November 2025 (Tentative)
-                  </p>
-                </div>
-                <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                  <p className="text-red-700 font-semibold text-sm">
-                    📅 National Finale: 20th December 2025 (Tentative)
-                  </p>
+                  <p className="text-orange-700 font-semibold text-sm">📅 Registration Closes: 4th October 2025</p>
                 </div>
               </div>
             </div>

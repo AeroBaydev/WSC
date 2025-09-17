@@ -7,39 +7,39 @@ export default function FAQ() {
 
   const faqs = [
     {
-      question: "Can I participate in more than one category?",
-      answer: "Yes, but you must register separately for each.",
-    },
-    // {
-    //   question: "Are team sizes fixed?",
-    //   answer: "Minimum 2 students + 1 mentor per team (except STARS & BEYOND, IDEA IGNITE and Esports Showdown which is individual).",
-    // },
-    {
-      question: "Do I need prior robotics/coding experience?",
-      answer: "No. Beginners can participate, especially in kit-based challenges.",
+      question: "Can a student participate in more than one category?",
+      answer: "Yes, but the student must register separately for each category they wish to participate in.",
     },
     {
-      question: "What is the language of submission?",
-      answer: "English.",
+      question: "Can students from different schools participate in the same team?",
+      answer: "Yes, provided they belong to the same age category.",
     },
     {
-      question: "Can mentors help during the event?",
-      answer: "Mentors can advise, but cannot directly build, code, or design.",
-    },
-    // {
-    //   question: "Will equipment be provided?",
-    //   answer: "Materials will be provided only in Mystery Makers category. For others, teams must bring their own.",
-    // },
-    {
-      question: "What safety measures apply to BattleBots?",
-      answer: "Weight/dimension checks, no fire/explosives/hazardous blades. Referees can stop unsafe bots.",
+      question: "Can one person be a mentor for multiple teams?",
+      answer: "Yes, but mentors are not allowed to assist during the competition.",
     },
     {
-      question: 'What is "Scienciro-based" judging?',
-      answer:
-        "It means evaluations focus on scientific reasoning + practical logic — not just flashy designs. Every team must explain the science/logic behind their project.",
+      question: "What is the language requirement for submissions?",
+      answer: "All reports must be submitted in English.",
     },
-  ]
+    {
+      question: "Can WSC intervene in matters of safety?",
+      answer: "Yes. WSC reserves all rights, and in the interest of student safety, it may modify rules or disqualify a team if required.",
+    },
+    {
+      question: "Who will provide the materials for the competition?",
+      answer: "The requirements are specified in each category. For categories where students must bring their own materials, WSC will not provide them.",
+    },
+    {
+      question: "Who can accompany students during regional and national events?",
+      answer: "Along with the participating students and mentor, up to two additional persons may attend. However, their participation will be chargeable for snacks.",
+    },
+    {
+      question: "What is the team size?",
+      answer: "The team size is specified separately for each category. In case any registered student from a team is unable to attend the regional or national event, the team must inform us by sending an email to info@worldskillchallenge.com.",
+    },
+  ];
+  
 
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index)
