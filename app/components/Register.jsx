@@ -313,7 +313,7 @@ export default function Register() {
       title: "DroneX",
       subtitle: "Junior & Senior (Grade 6-12)",
       price: "₹5,999",
-      description: "Build and fly custom drones",
+      description: "Big Drone Flying",
       features: [
         "3 Students + 1 Mentor team",
         "Complete drone construction",

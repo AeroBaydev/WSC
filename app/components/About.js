@@ -10,9 +10,9 @@ export default function About() {
   ]
 
   const benefits = [
-    "Exclusive Expert-Led Workshops 🎓",
+    "Up to ₹1 Lakh Prize Money 🏆",
     "Mentorship from Industry Leaders 🤝",
-    "Global Networking Opportunities 🌐",
+    "Premium Learning Access 📚",
     "Grants & Funding Support for Top Ideas 💡"
   ]
 

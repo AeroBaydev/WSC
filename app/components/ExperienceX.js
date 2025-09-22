@@ -205,10 +205,8 @@ export default function Categories() {
             Ignite young minds with creativity and innovation through robotics.
             Explore STEAM concepts, problem-solving, and hands-on building in
             exciting challenges.
-          </p><br />
-          <p className="text-lg text-green-600 font-semibold">
-            The detailed guidelines of all the categories will be provided on 20th September 2025.
           </p>
+          
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-8">

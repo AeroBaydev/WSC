@@ -70,7 +70,7 @@ export default function SoarFest() {
     },
     {
       name: "DRONEX",
-      subtitle: "Drone Making & Flying",
+      subtitle: "Big Drone Flying",
       description:
         "Master the Big Drone! Take control of Big drones provided at the venue. Complete flying challenges and spot landings to prove your piloting skills!",
       icon: "🚁",
@@ -163,10 +163,8 @@ const detailedGuidelines = {
           <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
             Ignite young minds with the thrill of flight, innovation, and hands-on making. Explore aerodynamics,
             engineering design, and flying skills through structured competitions.
-          </p><br />
-          <p className="text-lg text-green-600 font-semibold">
-            The detailed guidelines of all the categories will be provided on 20th September 2025.
           </p>
+          
          
         </motion.div>
 
