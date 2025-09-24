@@ -32,7 +32,7 @@ export default function FAQ() {
     },
     {
       question: "Who can accompany students during regional and national events?",
-      answer: "Along with the participating students and mentor, up to two additional persons may attend. However, their participation will be chargeable for registration.",
+      answer: "Along with the participating students and mentor, up to two additional persons may attend. However, their participation will be chargeable for refreshments.",
     },
     {
       question: "What is the team size?",
