@@ -115,7 +115,7 @@ export default function Register() {
       title: "ESPORTS SHOWDOWN",
       subtitle: "Gaming - Esports Showdown",
       price: "₹2,499",
-      description: "Survive. Strategize. Conquer. Team up. Virtual arenas. Sharpest minds and fastest reflexes win!",
+      description: "Survive. Strategize. Conquer. Team up. Virtual arenas.",
       features: [
         "Individual + 1 Mentor",
         "Football-style BattleBot arena",
@@ -151,7 +151,7 @@ export default function Register() {
       title: "TECH FOR GOOD",
       subtitle: "Robotics Competition",
       price: "₹3,332",
-      description: "Technology for mankind's betterment Create meaningful tech solutions and present your robotics project.",
+      description: "Create meaningful tech solutions and present your robotics project.",
       features: [
         "4 Students + 1 Mentor team",
         "Robotics project development",
@@ -169,7 +169,7 @@ export default function Register() {
       title: "TECH THROTTLE -> RC CAR",
       subtitle: "Gaming - RC Cars",
       price: "₹5,999",
-      description: "Race. Smash. Survive. Bring your own RC car! Compete in RC car hurdles.",
+      description: "Bring your own RC car! Compete in RC car hurdles.",
       features: [
         "3 Students + 1 Mentor team",
         "RC Car racing with hurdles",
@@ -187,7 +187,7 @@ export default function Register() {
       title: "TECH THROTTLE -> BATTLEBOT",
       subtitle: "Gaming - BattleBots",
       price: "₹5,999",
-      description: "Race. Smash. Survive. Bring your own BattleBot! Compete in BattleBot showdowns.",
+      description: "Bring your own BattleBot! Compete in BattleBot showdowns.",
       features: [
         "3 Students + 1 Mentor team",
         "BattleBot combat arena",
@@ -205,7 +205,7 @@ export default function Register() {
       title: "TECH THROTTLE -> BATTLEBOT: FOOTBALL EDITION",
       subtitle: "Gaming - BattleBots: Football Edition",
       price: "₹5,999",
-      description: "Race. Smash. Survive. Bring your own BattleBot! Compete in football-style BattleBot matches.",
+      description: "Bring your own BattleBot! Compete in football-style BattleBot matches.",
       features: [
         "3 Students + 1 Mentor team",
         "Football-style BattleBot arena",
