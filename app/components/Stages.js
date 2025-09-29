@@ -18,7 +18,7 @@ export default function Stages() {
         "Present your projects live at regional centers. Showcase your innovations and compete with local teams.",
       icon: "🏆",
       color: "bg-orange-600",
-      date: "7th & 8th November 2025 (Tentative)",
+      date: "Mid of November 2025 (Tentative)",
     },
     {
       stage: "Stage 3",
@@ -27,7 +27,7 @@ export default function Stages() {
         "Top teams from each region compete at the National Finale. The ultimate showdown with industry leaders in attendance.",
       icon: "🥇",
       color: "bg-red-500",
-      date: "20th December 2025 (Tentative)",
+      date: "December 2025 (Tentative)",
     },
     {
       stage: "Stage 4",
@@ -134,7 +134,7 @@ export default function Stages() {
                 >
                   <div className="text-3xl mb-3">🏆</div>
                   <h4 className="font-bold text-lg mb-2">Regional Rounds</h4>
-                  <p className="text-orange-100 text-sm">7th & 8th November 2025 (Tentative)</p>
+                  <p className="text-orange-100 text-sm">Mid of November 2025 (Tentative)</p>
                 </motion.div>
                 <motion.div
                   whileHover={{ scale: 1.05 }}
@@ -142,7 +142,7 @@ export default function Stages() {
                 >
                   <div className="text-3xl mb-3">🥇</div>
                   <h4 className="font-bold text-lg mb-2">National Finale</h4>
-                  <p className="text-orange-100 text-sm">20th December 2025 (Tentative)</p>
+                  <p className="text-orange-100 text-sm">December 2025 (Tentative)</p>
                 </motion.div>
               </div>
             </div>

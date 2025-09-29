@@ -82,67 +82,98 @@ export default function SoarFest() {
     },
   ]
 
-const detailedGuidelines = {
-  "Wing-shot Championship": {
-    "title": "Wing-shot Championship",
-    "details": [
-      "• Age Group: Primary",
-      "• Participation: 3 students + 1 mentor.",
-      "• Objective: Build and launch a catapult glider.",
-      "• Evaluation: Judged on build quality and distance covered."
-    ]
-  },
-
-  "RocketMania": {
-    "title": "RocketMania",
-    "details": [
-      "• Age Group: Primary",
-      "• Participation: 3 students + 1 mentor.",
-      "• Objective: Make rockets using air pressure, water, or solid propellant.",
-      "• Evaluation: Highest launch altitude wins."
-    ]
-  },
-
-  "DroneX Kids": {
-    "title": "DroneX Kids",
-    "details": [
-      "• Age Group: Primary",
-      "• Participation: 3 students + 1 mentor.",
-      "• Objective: Fly mini drones provided at the venue through spot landing challenges.",
-      "• Evaluation: Judged on control and accuracy."
-    ]
-  },
-
-  "Wing Warriors": {
-    "title": "Wing Warriors",
-    "details": [
-      "• Age Group: Junior & Senior",
-      "• Participation: 3 students + 1 mentor.",
-      "• Objective: Design and build an RC plane as per given guidelines.",
-      "• Evaluation: Judged on design quality and flight performance."
-    ]
-  },
-
-  "Throttle Titans": {
-    "title": "Throttle Titans",
-    "details": [
-      "• Age Group: Junior & Senior",
-      "• Participation: 3 students + 1 mentor.",
-      "• Objective: Compete in RC plane flying using identical planes provided at the venue.",
-      "• Evaluation: Judged on control, precision, and stability."
-    ]
-  },
-
-  "DroneX": {
-    "title": "DroneX",
-    "details": [
-      "• Age Group: Junior & Senior",
-      "• Participation: 3 students + 1 mentor",
-      "• Objective: Build and fly drones as per specifications.",
-      "• Evaluation: Judged on performance, stability, and control."
-    ]
-  }
-}
+  const detailedGuidelines = {
+    "Wing-shot Championship": {
+      title: "Wing-shot Championship (Catapult Gliders)",
+      details: [
+        "• Age Group: Grades 6–12",
+        "• Team: Up to 3 students + 1 mentor",
+        "• Engineering: Teams will be provided unfinished, disassembled glider parts and must sand and assemble within the given time.",
+        "• Flight Performance: Gliders must be launched to achieve the longest flight duration.",
+        "• Evaluation: Stability and aerodynamic efficiency scored. Judges also assess creativity and design aesthetics.",
+        "• Judging Criteria: Craftsmanship & Neatness, Creativity & Aesthetics, Assembly & Readiness, Aerodynamic Design, Flight Duration, Flight Stability, Technical Viva."
+      ]
+    },
+  
+    "RocketMania": {
+      title: "RocketMania (Rocketry)",
+      details: [
+        "• Age Group: Grades 6–12",
+        "• Team: Up to 3 students + 1 mentor",
+        "• Engineering: Teams will be provided raw materials and must assemble their rocket within the designated time.",
+        "• Launch Performance: Rockets will be evaluated on altitude, stability, and controlled descent. All launches at identical pressure for fairness.",
+        "• Design Constraints: Body Tube ID 23–25 mm; parachute recovery system compulsory; no metallic/heavy components (per DGCA guidelines).",
+        "• Judging Criteria: Craftsmanship & Neatness, Durability, Material Utilization, Stable Launch, Altitude, Flight Stability, Controlled Descent, Design Innovation, Technical Viva."
+      ]
+    },
+  
+    "DroneX Kids": {
+      title: "DroneX Kids (Mini Drone Flying)",
+      details: [
+        "• Age Group: Grades 6–12 (Primary-level event in festival)",
+        "• Team: Up to 3 students + 1 mentor",
+        "• Technical Viva: Teams will be asked basic drone-related questions before flying.",
+        "• Flying: One designated pilot flies mini drones (provided at venue) through landing/accuracy challenges.",
+        "• Judging Criteria: Technical Viva, Takeoff, Challenge Completion & Accuracy, Flight Smoothness, Landing Accuracy."
+      ]
+    },
+  
+    "Wing Warriors": {
+      title: "Wing Warriors (RC Plane Making)",
+      details: [
+        "• Age Group: Grades 6–12",
+        "• Team: Up to 3 students + 1 mentor",
+        "• Abstract Submission: Max 6 pages (A4, 1.5 spacing) covering team details, design, materials, build process, rough diagram. This acts as Round 1.",
+        "• Pre-Flight Window: 10 min calibration/taxing allowed before flying. No airframe modifications post final checks. Minor safe repairs allowed but time-bound.",
+        "• Evaluation: A professional aeromodeller from the organizing team will fly and evaluate dynamics of the plane.",
+        "• Design Constraints: Wingspan 800–1000 mm; Fuselage 600–750 mm; Max weight 800g; Brushless Motor 1400KV; Battery 3S LiPo 1500mAh max; T/W ratio 1–1.2.",
+        "• Judging Criteria: Craftsmanship & Neatness, Creativity & Aesthetics, Structural Integrity, Adherence to Constraints, Component Placement & Safety, Functional Readiness, Flight Stability, Aerodynamics, Technical Viva."
+      ]
+    },
+  
+    "Throttle Titans": {
+      title: "Throttle Titans (RC Plane Flying)",
+      details: [
+        "• Age Group: Grades 6–12",
+        "• Team: Up to 3 students + 1 mentor",
+        "• Pre-Flight Window: 15 min calibration/taxing before flying.",
+        "• Flight Evaluation: Smooth takeoff, leveled flight, landing at marked spot. Bonus points for max 3 approved stunts.",
+        "• Design Constraints: Same as Wing Warriors (RC planes).",
+        "• Judging Criteria: Stable Takeoff, Throttle & Altitude Management, Turns/Banking, Attitude Control, Crosswind Flying, Spot Landing, Stunts Bonus, Technical Viva."
+      ]
+    },
+  
+    "DroneX": {
+      title: "DroneX (Drone Making & Flying)",
+      details: [
+        "• Age Group: Grades 6–12",
+        "• Team: Up to 3 students + 1 mentor",
+        "• Technical Viva: Questions related to drone technology.",
+        "• Assembly: Teams provided drone kit + controller; must assemble, calibrate, and check within given time.",
+        "• Flying: One designated pilot must complete venue challenges.",
+        "• Design Constraints: Build as per materials and guidelines provided at venue within the given time.",
+        "• Judging Criteria: Assembly & Connections, Component Placement, Technical Viva, Challenge Completion & Accuracy, Landing."
+      ]
+    },
+  
+    // General SoarFest Rules (can be displayed separately if needed)
+    General: {
+      title: "General Rules for SoarFest",
+      details: [
+        "• Max 3 members per team; optional mentor allowed (guide only).",
+        "• Bonafide certificate required from school.",
+        "• Unlimited teams per school allowed.",
+        "• Each team can join a maximum of 2 events.",
+        "• Activities can proceed only with event in-charge approval.",
+        "• Must use provided materials/equipment or as stated in abstract.",
+        "• Safety protocols must always be followed.",
+        "• Teams must bring necessary tools/components.",
+        "• Judges’ decisions are final and binding.",
+        "• Eco-friendly materials encouraged (bonus points)."
+      ]
+    }
+  };
+  
 
 
   return (
@@ -237,7 +268,7 @@ const detailedGuidelines = {
             onClick={() => setShowDetailsModal(true)}
             className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-orange-600 hover:to-red-600 transform hover:scale-105 transition-all duration-300 shadow-lg"
           >
-            More Details
+            Guidelines
           </button>
         </motion.div>
 

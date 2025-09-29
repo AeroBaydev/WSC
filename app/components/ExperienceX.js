@@ -117,73 +117,84 @@ export default function Categories() {
     "STARS & BEYOND": {
       title: "STARS & BEYOND (Quiz Competition)",
       details: [
-        "• Age Group: Primary",
-        "• Participation: Individual",
-        "• Objective: Test knowledge of astronomy and space through fun, engaging quiz rounds.",
-        "• Format: Online quiz with MCQs, fill-ups, and true/false questions.",
-        "• Regional Round: Online live quiz.",
-        "• Evaluation: Accuracy, speed, observation skills, curiosity.",
+        "• Overview: A national-level online quiz for Grades 3–5 to spark curiosity in astronomy and space science. The competition tests knowledge of planets, constellations, astronauts, and space missions through engaging rounds.",
+        "• Eligibility: Open to Grades 3–5. Individual participation only.",
+        "• Format: Preliminary Round – 20 MCQs (online). Top 30% qualify. Semi-Final – Mixed questions (online). Top 10 qualify. Final – Mixed questions (online).",
+        "• Rules & Specs: Correct Answer = +5 points. No negative marking. Camera must remain ON during live rounds. No external help/books allowed. All rounds conducted online.",
+        "• Judging: Accuracy, observation skills, and curiosity.",
         "• Pro Tip: Revise basics of the solar system, constellations, astronauts, and recent space missions.",
       ],
     },
+  
     "IDEA TANK": {
       title: "IDEA TANK (Entrepreneur Challenge)",
       details: [
-        "• Age Group: Junior & Senior",
-        "• Participation: Individual",
-        "• Objective: Identify a real-world problem and pitch an innovative business/entrepreneurial solution.",
-        "• Submission: Business Idea Deck (problem, solution, business model, impact).",
-        "• Regional Round: 4–5 min live presentation.",
-        "• Evaluation: Creativity, feasibility, market potential, communication.",
-        "• Pro Tip: Show clear value proposition, scalability, and practical implementation.",
+        "• Overview: STEM + Entrepreneurship challenge where students identify a real-world problem and propose innovative, market-ready solutions.",
+        "• Eligibility: Junior & Senior categories. Individual participation only.",
+        "• Format: Submission – Mandatory pitch deck (≤10 slides) with Problem Identification, Solution, Business Model, Impact Assessment. Regional Round – 4–5 min live presentation. National Finale – 7 min pitch + 3 min Q&A.",
+        "• Rules & Specs: Submission format – PPT/PDF. Students must bring their own devices. Professional conduct required.",
+        "• Judging: Creativity, feasibility, market potential, impact, and communication.",
+        "• Pro Tip: Highlight value proposition, scalability, and practical implementation.",
       ],
     },
+  
     "ESPORTS SHOWDOWN": {
       title: "ESPORTS SHOWDOWN (Gaming)",
       details: [
-        "• Age Group: Junior & Senior",
-        "• Team: 4 students + 1 mentor",
-        "• Format: Round 1 (Online) → Round 2 (Offline – Regional)",
-        "• Games: BGMI & Free Fire",
-        "• Evaluation: Teamwork, strategy, communication, gaming skills, and compliance",
+        "• Overview: Competitive esports tournament testing reflexes, strategy, teamwork, and gaming skills.",
+        "• Eligibility: Open to Grades 6–12. Teams of 3–5 players.",
+        "• Format: Qualifiers – Online knockout round. Regional – Offline round. Finals – Best-of-series (Bo3/Bo5).",
+        "• Rules & Specs: Games – BGMI & Free Fire. Standardized in-game settings. No cheats/mods allowed. Players must use personal devices.",
+        "• Judging: Teamwork, strategy, communication, compliance, and gaming skills.",
       ],
     },
+  
     "MYSTERY MAKERS": {
       title: "MYSTERY MAKERS (Design & Thinking)",
       details: [
-        "• Age Group: Junior & Senior",
-        "• Team: 3 students + 1 mentor",
-        "• Format: On-the-spot material will be provided.",
-        "• Process: Teams design, build, and present within given time blocks. Students must create a useful product from provided materials and explain the STEAM concepts behind it.",
-        "• Evaluation: Creativity, teamwork, design thinking, and resource utilization.",
+        "• Overview: On-the-spot design and problem-solving challenge. Students create prototypes using provided materials and explain the STEAM concepts behind them.",
+        "• Eligibility: Teams of 2–3 students (Grades 6–12).",
+        "• Format: Regional Round – Mystery problem reveal → Brainstorm → Prototype/Design presentation. Final – Jury Q&A + refinement round.",
+        "• Rules & Specs: Materials will be provided on the spot. Time-bound design and build process.",
+        "• Judging: Creativity (30%), Feasibility (25%), Presentation (20%), Teamwork (15%), Impact (10%).",
       ],
     },
-
+  
     "TECH FOR GOOD": {
       title: "TECH FOR GOOD (Robotics & Innovation)",
       details: [
-        "• Age Group: Junior & Senior",
-        "• Team: 4 students + 1 mentor",
-        "• Theme: Technology for the Betterment of Humankind.",
-        "• Submission: Send report on info@worldskillchallenge.com (problem, design, execution, societal benefit).",
-        "• Regional Round: Live demonstration of shortlisted projects.",
-        "• Evaluation: Innovation, execution, impact, feasibility, alignment with UN SDGs.",
+        "• Overview: Robotics challenge where students design solutions to social/environmental challenges under the theme 'Robotics for Sustainable Future'.",
+        "• Eligibility: Teams of 3–5 students. Open to Grades 6–12.",
+        "• Format: Stage 1 – Problem selection + Proposal submission (report to info@worldskillchallenge.com). Stage 2 – Live demo day showcase. Stage 3 – National Finals pitch + testing.",
+        "• Rules & Specs: Must demonstrate design, execution, and societal benefit.",
+        "• Judging: Innovation & Design (30%), Technical Functionality (30%), Social/Environmental Impact (20%), Presentation & Communication (20%).",
       ],
     },
-
-    "TECH THROTTLE ": {
-      title: "TECH THROTTLE (GAMING)",
+  
+    "TECH THROTTLE": {
+      title: "TECH THROTTLE (RC Car & Battle Bot)",
       details: [
-        "• Age Group: Junior & Senior",
-        "• Team: Individual or 3 students + 1 mentor (as per category)",
-        "• RC Car Race: Obstacle track (speed, accuracy, control).",
-        "• BattleBots: Combat robots (points for strikes, defense, survival).",
-        "• BattleBot Football Edition: Robot football-style match.",
-        "• Safety: No hazardous materials; unsafe bots disqualified.",
-        "• Evaluation: Performance, durability, strategy, innovation, compliance.",
+        "• (a) RC Car Race: Remote-controlled car race on speed and obstacle tracks.",
+        "   - Eligibility: Teams of 3 students.",
+        "   - Format: Round 1 – Time lap (100m). Round 2 – Obstacle avoidance (zig-zag, ramps).",
+        "   - Rules & Specs: Car ≤40×25×20 cm, weight 1–1.5 kg, battery ≤12V. Scoring = Time + penalties. Obstacles hit = +3s, Out of track = +2s.",
+        "   - Judging: Performance, speed, accuracy, and control.",
+        "",
+        "• (b) BattleBots: Sumo-style robot battles.",
+        "   - Eligibility: Teams of 3 students.",
+        "   - Format: Round 1 – Push-out battles. Round 2 – Push-out + flipping bonus.",
+        "   - Rules & Specs: Bot ≤30×30 cm, ≤1.5 kg, ≤12V. Arena 2m ring.",
+        "   - Judging: Push-out = 3 points. Flip = +1 point. Performance, durability, strategy.",
+        "",
+        "• (c) BattleBot Football Edition: Robotic football tournament.",
+        "   - Eligibility: Teams of 3–4 students.",
+        "   - Format: 5-minute matches on 3m × 2m field. Bots score goals & defend.",
+        "   - Rules & Specs: Bot ≤30×30 cm, ≤1.5 kg, ≤12V. Must use plows/wedges. Ball = lightweight foam/plastic.",
+        "   - Judging: Goal = 1 point. Strategy, defense, compliance.",
       ],
     },
   };
+  
 
   return (
     <section id="categories" className="py-20 bg-white">
@@ -309,7 +320,7 @@ export default function Categories() {
             onClick={() => setShowDetailsModal(true)}
             className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-orange-600 hover:to-red-600 transform hover:scale-105 transition-all duration-300 shadow-lg"
           >
-            More Details
+            Guidelines
           </button>
         </motion.div>
 
