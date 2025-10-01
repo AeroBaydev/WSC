@@ -177,8 +177,9 @@ export default function SoarFest() {
 
 
   return (
-    <section id="soarfest" className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="soarfest" className="py-20 bg-top md:bg-cover bg-contain bg-no-repeat bg-fixed relative" style={{backgroundImage: 'url(/images/sfbg.jpg)'}}>
+      <div className="absolute inset-0 bg-white/85"></div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -210,7 +211,7 @@ export default function SoarFest() {
           
         </motion.div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-2 gap-8">
           {categories.map((category, index) => (
             <motion.div
               key={category.name}
