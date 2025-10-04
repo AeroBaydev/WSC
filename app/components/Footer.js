@@ -74,7 +74,7 @@ export default function Footer() {
             <ul className="space-y-2 text-sm text-gray-600">
               <li>📧 info@worldskillchallenge.com</li>
               <li>📞 +91 9266300825</li>
-              <li>📅 Registration Closes: 4th Oct 2025</li>
+              <li>📅 Registration Closes: 15th Oct 2025</li>
               <li>
                 <a
                   href="https://www.instagram.com/wsc_india/#"
