@@ -125,6 +125,7 @@ export default function Stages() {
               { name: "Noida", state: "Delhi NCR", icon: "🏙️", color: "bg-orange-500" },
               { name: "Lucknow", state: "Uttar Pradesh", icon: "🌆", color: "bg-orange-600" },
               { name: "Kolkata", state: "West Bengal", icon: "🏛️", color: "bg-red-500" },
+              { name: "Jabalpur", state: "Madhya Pradesh", icon: "🏛️", color: "bg-red-500" },
               { name: "Mumbai", state: "Maharashtra", icon: "🏘️", color: "bg-red-600" },
               { name: "Nagpur", state: "Maharashtra", icon: "🏢", color: "bg-orange-500" },
             ].map((location, index) => (
