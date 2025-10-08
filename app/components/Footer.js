@@ -14,8 +14,52 @@ import {
 import { Button } from "@/components/ui/button"
 
 export default function Footer() {
+  const localBusinessStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://worldskillchallenge.com/#localbusiness",
+    name: "World Skill Challenge",
+    alternateName: "WSC",
+    description: "Educational competition platform organizing national and international skill challenges for students",
+    url: "https://worldskillchallenge.com",
+    telephone: "+91-9266300825",
+    email: "worldskillchallenge@gmail.com",
+    address: [
+      {
+        "@type": "PostalAddress",
+        addressCountry: "IN",
+        addressRegion: "Uttar Pradesh",
+        addressLocality: "Noida",
+        streetAddress: "D-64, Noida Sector 63",
+        postalCode: "201301"
+      },
+      {
+        "@type": "PostalAddress",
+        addressCountry: "AE",
+        addressRegion: "Dubai",
+        addressLocality: "Business Bay",
+        streetAddress: "1606, Silver Tower"
+      }
+    ],
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: "28.6139",
+      longitude: "77.2090"
+    },
+    openingHours: "Mo-Fr 09:00-18:00",
+    priceRange: "$$",
+    paymentAccepted: "Cash, Credit Card, Online Payment",
+    currenciesAccepted: "INR",
+    sameAs: [
+      "https://www.instagram.com/wsc_india/",
+      "https://chat.whatsapp.com/DAAiwB4FF83AjxVANWt9YQ"
+    ]
+  }
+
   return (
-    <footer className="bg-white text-gray-800 py-14 border-t border-gray-200">
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessStructuredData) }} />
+      <footer className="bg-white text-gray-800 py-14 border-t border-gray-200" role="contentinfo">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         {/* Main Grid */}
         <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-10 mb-12">
@@ -49,18 +93,29 @@ export default function Footer() {
             viewport={{ once: true }}
           >
             <h4 className="text-lg font-semibold mb-4 text-orange-500">Quick Links</h4>
-            <ul className="space-y-2 text-sm">
-              {["About", "Categories", "Stages", "Register", "Contact"].map((item) => (
-                <li key={item}>
-                  <a
-                    href={`#${item.toLowerCase()}`}
-                    className="text-gray-600 hover:text-orange-500 transition-colors"
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <nav aria-label="Quick navigation links">
+              <ul className="space-y-2 text-sm" role="list">
+                {[
+                  { name: "About", url: "#about" },
+                  { name: "Categories", url: "#categories" },
+                  { name: "Stages", url: "#stages" },
+                  { name: "Register", url: "#register" },
+                  { name: "Contact", url: "#contact" },
+                  { name: "FAQ", url: "/faq" },
+                  { name: "Updates", url: "/updates" }
+                ].map((item) => (
+                  <li key={item.name}>
+                    <a
+                      href={item.url}
+                      className="text-gray-600 hover:text-orange-500 transition-colors"
+                      aria-label={`Navigate to ${item.name} section`}
+                    >
+                      {item.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </motion.div>
 
           {/* Contact Info */}
@@ -71,11 +126,19 @@ export default function Footer() {
             viewport={{ once: true }}
           >
             <h4 className="text-lg font-semibold mb-4 text-orange-500">Contact Info</h4>
-            <ul className="space-y-2 text-sm text-gray-600">
-              <li>📧 info@worldskillchallenge.com</li>
-              <li>📞 +91 9266300825</li>
-              <li>📅 Registration Closes: 15th Oct 2025</li>
-              <li>
+            <address className="space-y-2 text-sm text-gray-600 not-italic">
+              <p>
+                <a href="mailto:info@worldskillchallenge.com" className="hover:text-orange-500 transition-colors">
+                  📧 info@worldskillchallenge.com
+                </a>
+              </p>
+              <p>
+                <a href="tel:+919266300825" className="hover:text-orange-500 transition-colors">
+                  📞 +91 9266300825
+                </a>
+              </p>
+              <p>📅 Registration Closes: 15th Oct 2025</p>
+              <p>
                 <a
                   href="https://www.instagram.com/wsc_india/#"
                   target="_blank"
@@ -88,8 +151,8 @@ export default function Footer() {
                   </svg>
                   Instagram
                 </a>
-              </li>
-              <li>
+              </p>
+              <p>
                 <a
                   href="https://chat.whatsapp.com/DAAiwB4FF83AjxVANWt9YQ"
                   target="_blank"
@@ -102,8 +165,8 @@ export default function Footer() {
                   </svg>
                   WhatsApp Community
                 </a>
-              </li>
-            </ul>
+              </p>
+            </address>
           </motion.div>
 
           {/* Address */}
@@ -114,10 +177,18 @@ export default function Footer() {
             viewport={{ once: true }}
           >
             <h4 className="text-lg font-semibold mb-4 text-orange-500">Our Offices</h4>
-            <ul className="space-y-2 text-sm text-gray-600">
-              <li>📍 HQ: 1606, Silver Tower, Business Bay, Dubai</li>
-              <li>📍 India: D-64, Noida Sector 63, U.P.</li>
-            </ul>
+            <address className="space-y-2 text-sm text-gray-600 not-italic">
+              <p>
+                <strong>📍 HQ:</strong><br />
+                1606, Silver Tower<br />
+                Business Bay, Dubai
+              </p>
+              <p>
+                <strong>📍 India:</strong><br />
+                D-64, Noida Sector 63<br />
+                Uttar Pradesh, India
+              </p>
+            </address>
           </motion.div>
         </div>
 
@@ -289,5 +360,6 @@ export default function Footer() {
         </motion.div>
       </div>
     </footer>
+    </>
   )
 }

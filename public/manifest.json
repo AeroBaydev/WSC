@@ -1,27 +1,36 @@
 {
   "name": "World Skill Challenge 2025",
   "short_name": "WSC 2025",
-  "description": "National & International Skill Hunt for Young Innovators",
+  "description": "Join World Skill Challenge 2025! National & international skill hunt for students. Compete in IDEA IGNITE, MYSTERY MAKERS, TECH FOR GOOD, TECH THROTTLE.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ff6b35",
   "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-IN",
+  "categories": ["education", "competition", "technology"],
   "icons": [
     {
       "src": "/images/wsc-logo.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "maskable any"
+      "purpose": "any maskable"
     },
     {
       "src": "/images/wsc-logo.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable any"
+      "purpose": "any maskable"
     }
   ],
-  "categories": ["education", "competition", "students"],
-  "lang": "en",
-  "dir": "ltr"
+  "screenshots": [
+    {
+      "src": "/images/wsc-logo.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "World Skill Challenge 2025 Homepage"
+    }
+  ]
 }
