@@ -1,9 +1,64 @@
 "use client";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 export default function Categories() {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [showReferenceModal, setShowReferenceModal] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Mount check for portal
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Prevent background scroll but allow modal scroll
+  useEffect(() => {
+    const preventBackgroundScroll = (e) => {
+      // Allow scrolling within modal content
+      const modalContent = document.querySelector('[data-modal-content]');
+      const referenceModalContent = document.querySelector('[data-reference-modal-content]');
+      if ((modalContent && modalContent.contains(e.target)) || 
+          (referenceModalContent && referenceModalContent.contains(e.target))) {
+        return; // Allow scrolling within modal
+      }
+      
+      // Prevent background scrolling
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    };
+
+    if (showDetailsModal || showReferenceModal) {
+      // Prevent background scrolling without changing position
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      
+      // Add scroll event listeners to prevent background scrolling only
+      window.addEventListener('scroll', preventBackgroundScroll, { passive: false });
+      window.addEventListener('wheel', preventBackgroundScroll, { passive: false });
+      window.addEventListener('touchmove', preventBackgroundScroll, { passive: false });
+    } else {
+      // Restore scrolling
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      
+      // Remove scroll event listeners
+      window.removeEventListener('scroll', preventBackgroundScroll);
+      window.removeEventListener('wheel', preventBackgroundScroll);
+      window.removeEventListener('touchmove', preventBackgroundScroll);
+    }
+    
+    // Cleanup function
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      window.removeEventListener('scroll', preventBackgroundScroll);
+      window.removeEventListener('wheel', preventBackgroundScroll);
+      window.removeEventListener('touchmove', preventBackgroundScroll);
+    };
+  }, [showDetailsModal, showReferenceModal]);
 
   const categories = [
     {
@@ -135,6 +190,7 @@ export default function Categories() {
         "• Rules & Specs: Submission format – PPT/PDF. Students must bring their own devices. Professional conduct required.",
         "• Judging: Creativity, feasibility, market potential, impact, and communication.",
         "• Pro Tip: Highlight value proposition, scalability, and practical implementation.",
+        "• Note: Last date for submission of proposal is 30th October 2025 on info@worldskillchallenge.com",
       ],
     },
   
@@ -168,6 +224,7 @@ export default function Categories() {
         "• Format: Stage 1 – Problem selection + Proposal submission deadline: 30th October 2025 (report to info@worldskillchallenge.com). Stage 2 – Live demo day showcase. Stage 3 – National Finals pitch + testing.",
         "• Rules & Specs: Must demonstrate design, execution, and societal benefit.",
         "• Judging: Innovation & Design (30%), Technical Functionality (30%), Social/Environmental Impact (20%), Presentation & Communication (20%).",
+        
       ],
     },
   
@@ -281,6 +338,18 @@ export default function Categories() {
                       Note: {category.note}
                     </div>
                   )}
+                  
+                  {/* Reference Questions Button for STARS & BEYOND */}
+                  {category.name === "STARS & BEYOND" && (
+                    <div className="mt-4">
+                      <button
+                        onClick={() => setShowReferenceModal(true)}
+                        className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:from-blue-600 hover:to-purple-600 transform hover:scale-105 transition-all duration-300 shadow-md"
+                      >
+                        📚 Reference Questions
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 {/* Prize Money section commented out
@@ -325,15 +394,41 @@ export default function Categories() {
           </button>
         </motion.div>
 
-        {showDetailsModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        {showDetailsModal && isMounted && createPortal(
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4"
+            data-modal-portal
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 999999,
+              width: '100vw',
+              height: '100vh',
+              overflow: 'hidden'
+            }}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setShowDetailsModal(false);
+              }
+            }}
+          >
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               className="bg-white rounded-xl max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl"
+              data-modal-content
+              style={{
+                position: 'relative',
+                zIndex: 1000000,
+                maxWidth: '90vw',
+                maxHeight: '90vh'
+              }}
             >
-              <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-center">
+              <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-center z-10">
                 <h2 className="text-2xl font-bold text-gray-900">
                   Detailed Category Guidelines
                 </h2>
@@ -373,7 +468,188 @@ export default function Categories() {
                 ))}
               </div>
             </motion.div>
-          </div>
+          </div>,
+          document.body
+        )}
+
+        {/* Reference Questions Modal */}
+        {showReferenceModal && isMounted && createPortal(
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4"
+            data-modal-portal
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 999999,
+              width: '100vw',
+              height: '100vh',
+              overflow: 'hidden'
+            }}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setShowReferenceModal(false);
+              }
+            }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="bg-white rounded-xl max-w-5xl max-h-[90vh] overflow-y-auto shadow-2xl"
+              data-reference-modal-content
+              style={{
+                position: 'relative',
+                zIndex: 1000000,
+                maxWidth: '90vw',
+                maxHeight: '90vh'
+              }}
+            >
+              <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-center z-10">
+                <h2 className="text-2xl font-bold text-gray-900">
+                  📚 Stars & Beyond - Reference Questions
+                </h2>
+                <button
+                  onClick={() => setShowReferenceModal(false)}
+                  className="text-gray-500 hover:text-gray-700 text-2xl font-bold w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div className="p-6 space-y-6">
+                {/* About Section */}
+                <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">🧭 About the Category</h3>
+                  <p className="text-gray-700 mb-4">
+                    Welcome to the Stars and Beyond category of the World Science Championship (WSC)! 
+                    This guide will help you revise the most important space science facts that may appear in your quiz.
+                    Regional Round will be conducted in last week of November 2025.(Tentative)
+                  </p>
+                  
+                  <div className="mb-4">
+                    <h4 className="font-semibold text-gray-900 mb-2">The quiz will test your knowledge of:</h4>
+                    <ul className="text-gray-700 space-y-1">
+                      <li>• 🌞 The Sun, Moon, and Planets</li>
+                      <li>• 🪐 The Solar System and Beyond</li>
+                      <li>• 🚀 Indian & Global Space Missions</li>
+                      <li>• 🌌 Stars, Galaxies, and Astronauts</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-2">Question types may include:</h4>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">✅ Multiple Choice</span>
+                      <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">✅ True or False</span>
+                      <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">✅ Fill in the Blanks</span>
+                      <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">✅ Visual Identification</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Key Reference Questions */}
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">🧠 Key Reference Questions</h3>
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse border border-gray-300">
+                      <thead>
+                        <tr className="bg-gray-50">
+                          <th className="border border-gray-300 px-4 py-2 text-left font-semibold">#</th>
+                          <th className="border border-gray-300 px-4 py-2 text-left font-semibold">Question</th>
+                          <th className="border border-gray-300 px-4 py-2 text-left font-semibold">Answer</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {[
+                          { q: "Which is the closest star to Earth?", a: "Sun" },
+                          { q: "How many planets are in our Solar System?", a: "8" },
+                          { q: "Which planet is called the 'Red Planet'?", a: "Mars" },
+                          { q: "What is Earth's only natural satellite?", a: "Moon" },
+                          { q: "Which planet is the largest in the Solar System?", a: "Jupiter" },
+                          { q: "Which planet has rings around it?", a: "Saturn" },
+                          { q: "What causes day and night on Earth?", a: "Earth's rotation on its axis" },
+                          { q: "Which planet is the smallest in the Solar System?", a: "Mercury" },
+                          { q: "Which planet is known as Earth's twin?", a: "Venus" },
+                          { q: "Which is the hottest planet?", a: "Venus" },
+                          { q: "What gives the Sun its energy?", a: "Nuclear fusion" },
+                          { q: "Which planet is farthest from the Sun?", a: "Neptune" },
+                          { q: "Which planet spins on its side?", a: "Uranus" },
+                          { q: "Which is the brightest star in the night sky?", a: "Sirius" },
+                          { q: "The pattern of stars in the sky is called a:", a: "Constellation" },
+                          { q: "What are shooting stars actually?", a: "Meteors" },
+                          { q: "What protects Earth from harmful Sun rays?", a: "Ozone layer" },
+                          { q: "The Moon has _______ gravity compared to Earth.", a: "Less" },
+                          { q: "Which galaxy is Earth in?", a: "Milky Way" },
+                          { q: "The shape of our galaxy is:", a: "Spiral" },
+                          { q: "Which star helps travelers find direction at night?", a: "Pole Star (Polaris)" },
+                          { q: "The Sun is mainly made of which gases?", a: "Hydrogen and Helium" },
+                          { q: "Which telescope orbits around Earth?", a: "Hubble Space Telescope" },
+                          { q: "Who was the first person to walk on the Moon?", a: "Neil Armstrong" },
+                          { q: "Who was the first Indian in space?", a: "Rakesh Sharma" },
+                          { q: "Who was the first Indian woman in space?", a: "Kalpana Chawla" },
+                          { q: "Which Indian satellite studied the Moon?", a: "Chandrayaan-1" },
+                          { q: "What is the name of India's Mars mission?", a: "Mangalyaan" },
+                          { q: "What is India's upcoming human spaceflight mission?", a: "Gaganyaan" },
+                          { q: "In which Indian state was ISRO founded?", a: "Kerala" }
+                        ].map((item, index) => (
+                          <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                            <td className="border border-gray-300 px-4 py-2 font-medium">{index + 1}</td>
+                            <td className="border border-gray-300 px-4 py-2">{item.q}</td>
+                            <td className="border border-gray-300 px-4 py-2 font-semibold text-blue-600">{item.a}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Quick Revision Notes */}
+                <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">🌍 Quick Revision Notes</h3>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-2">Planet Facts:</h4>
+                      <ul className="text-gray-700 space-y-1 text-sm">
+                        <li>• Order of Planets: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune</li>
+                        <li>• 'Blue Planet' → Earth</li>
+                        <li>• 'Red Planet' → Mars</li>
+                        <li>• 'Morning Star' / 'Evening Star' → Venus</li>
+                        <li>• 'Gas Giants' → Jupiter & Saturn</li>
+                        <li>• 'Ice Giants' → Uranus & Neptune</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-2">Space Facts:</h4>
+                      <ul className="text-gray-700 space-y-1 text-sm">
+                        <li>• Galaxy nearest to Milky Way → Andromeda</li>
+                        <li>• Largest asteroid → Ceres</li>
+                        <li>• Fastest rotating planet → Jupiter</li>
+                        <li>• Planet with tallest volcano (Olympus Mons) → Mars</li>
+                        <li>• First Indian satellite → Aryabhata</li>
+                        <li>• First man-made satellite → Sputnik 1</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Tips Section */}
+                <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">🧩 Tips for Participants</h3>
+                  <ul className="text-gray-700 space-y-2">
+                    <li>• Revise daily — focus on space facts and Indian missions.</li>
+                    <li>• Watch short ISRO/NASA educational videos for visuals.</li>
+                    <li>• Be calm and confident during live rounds.</li>
+                    <li>• Keep your camera ON and internet stable if online.</li>
+                    <li>• Remember: accuracy and focus matter more than speed!</li>
+                  </ul>
+                </div>
+              </div>
+            </motion.div>
+          </div>,
+          document.body
         )}
       </div>
     </section>

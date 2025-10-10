@@ -122,12 +122,12 @@ export default function Stages() {
 
           <div className="space-y-8 md:space-y-12">
             {[
-              { name: "Noida", state: "Delhi NCR", icon: "🏙️", color: "bg-orange-500" },
-              { name: "Lucknow", state: "Uttar Pradesh", icon: "🌆", color: "bg-orange-600" },
-              { name: "Kolkata", state: "West Bengal", icon: "🏛️", color: "bg-red-500" },
-              { name: "Jabalpur", state: "Madhya Pradesh", icon: "🏛️", color: "bg-red-500" },
-              { name: "Mumbai", state: "Maharashtra", icon: "🏘️", color: "bg-red-600" },
-              { name: "Nagpur", state: "Maharashtra", icon: "🏢", color: "bg-orange-500" },
+              { name: "Prominanace World School, Noida", state: "Delhi NCR", icon: "🏙️", date: "6th December 2025", color: "bg-orange-500" },
+              { name: "Allen House Rooma School, Kanpur ", state: "Uttar Pradesh", icon: "🌆", date: "19th December 2025", color: "bg-orange-600" },
+              { name: "Kolkata", state: "West Bengal", icon: "🏛️", date: "Announced Soon", color: "bg-red-500" },
+              { name: "Jabalpur", state: "Madhya Pradesh", icon: "🏛️", date: "Announced Soon", color: "bg-red-500" },
+              { name: "Mumbai", state: "Maharashtra", icon: "🏘️", date: "Announced Soon", color: "bg-red-600" },
+              { name: "Nagpur", state: "Maharashtra", icon: "🏢", date: "Announced Soon", color: "bg-orange-500" },
             ].map((location, index) => (
               <motion.div
                 key={location.name}
@@ -147,7 +147,7 @@ export default function Stages() {
                         <span className="text-xl md:text-2xl">{location.icon}</span>
                       </div>
                       <div>
-                        <h3 className="text-base md:text-lg font-bold text-orange-500">Regional Center</h3>
+                        <h3 className="text-base md:text-lg font-bold text-orange-500">Regional: <span className="text-violet-500">{location.state} @ {location.date}</span></h3>
                         <h4 className="text-lg md:text-xl font-bold text-gray-900">{location.name}</h4>
                       </div>
                     </div>

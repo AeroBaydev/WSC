@@ -14,7 +14,7 @@ export default function FAQ() {
       question: "Can students from different schools participate in the same team?",
       answer: "Yes, provided they belong to the same age category.",
     },
-    {
+    { 
       question: "Can one person be a mentor for multiple teams?",
       answer: "Yes, but mentors are not allowed to assist during the competition.",
     },
@@ -37,6 +37,14 @@ export default function FAQ() {
     {
       question: "What is the team size?",
       answer: "The team size is specified separately for each category. In case any registered student from a team is unable to attend the regional or national event, the team must inform us by sending an email to info@worldskillchallenge.com.",
+    },
+    {
+      question: "Will food, accommodation, and travel arrangements be provided by the World Skill Challenge?",
+      answer: "No, food, accommodation, and travel arrangements will not be provided by the World Skill Challenge. All such expenses are to be borne by the participants or their institutions.",
+    },    
+    {
+      question: "Can a boy and a girl participate in the same team?",
+      answer: "Yes, a boy and a girl can participate together in the same team. The World Skill Challenge promotes inclusivity and teamwork irrespective of gender.",
     },
   ];
   

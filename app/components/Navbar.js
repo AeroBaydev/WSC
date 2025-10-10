@@ -1,6 +1,6 @@
 "use client"
 import { motion } from "framer-motion"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { SignInButton, UserButton, useUser } from "@clerk/nextjs"
 import { useRouter, usePathname } from "next/navigation"
@@ -8,6 +8,8 @@ import { useRouter, usePathname } from "next/navigation"
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [isMoreOpen, setIsMoreOpen] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
+  const [lastScrollY, setLastScrollY] = useState(0)
   const { isSignedIn, user } = useUser()
   const router = useRouter()
   const pathname = usePathname()
@@ -21,6 +23,32 @@ export default function Navbar() {
     { label: "Register", anchor: "register" },
     { label: "Contact", anchor: "contact" },
   ]
+
+  // Handle scroll behavior for navbar visibility
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+      
+      // Always show navbar at the top of the page
+      if (currentScrollY < 10) {
+        setIsVisible(true)
+      }
+      // Hide navbar when scrolling up, show when scrolling down
+      else if (currentScrollY < lastScrollY) {
+        setIsVisible(true) // Scrolling up - show navbar
+      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false) // Scrolling down - hide navbar
+      }
+      
+      setLastScrollY(currentScrollY)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [lastScrollY])
 
   const handleNavigation = (item) => {
     const section = item.anchor
@@ -36,7 +64,8 @@ export default function Navbar() {
   return (
     <motion.nav
       initial={{ y: -100 }}
-      animate={{ y: 0 }}
+      animate={{ y: isVisible ? 0 : -100 }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
       className="fixed top-0 w-full bg-white/95 backdrop-blur-sm z-50 border-b border-gray-100 shadow-sm"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

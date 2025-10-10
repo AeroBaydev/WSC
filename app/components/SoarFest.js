@@ -1,9 +1,61 @@
 "use client"
 import { motion } from "framer-motion"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { createPortal } from "react-dom"
 
 export default function SoarFest() {
   const [showDetailsModal, setShowDetailsModal] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
+
+  // Mount check for portal
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Prevent background scroll but allow modal scroll
+  useEffect(() => {
+    const preventBackgroundScroll = (e) => {
+      // Allow scrolling within modal content
+      const modalContent = document.querySelector('[data-modal-content]');
+      if (modalContent && modalContent.contains(e.target)) {
+        return; // Allow scrolling within modal
+      }
+      
+      // Prevent background scrolling
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    };
+
+    if (showDetailsModal) {
+      // Prevent background scrolling without changing position
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      
+      // Add scroll event listeners to prevent background scrolling only
+      window.addEventListener('scroll', preventBackgroundScroll, { passive: false });
+      window.addEventListener('wheel', preventBackgroundScroll, { passive: false });
+      window.addEventListener('touchmove', preventBackgroundScroll, { passive: false });
+    } else {
+      // Restore scrolling
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      
+      // Remove scroll event listeners
+      window.removeEventListener('scroll', preventBackgroundScroll);
+      window.removeEventListener('wheel', preventBackgroundScroll);
+      window.removeEventListener('touchmove', preventBackgroundScroll);
+    }
+    
+    // Cleanup function
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      window.removeEventListener('scroll', preventBackgroundScroll);
+      window.removeEventListener('wheel', preventBackgroundScroll);
+      window.removeEventListener('touchmove', preventBackgroundScroll);
+    };
+  }, [showDetailsModal]);
 
   const categories = [
     // Primary Categories (Up to Grade 5)
@@ -293,15 +345,41 @@ export default function SoarFest() {
           </div>
         </motion.div>
 
-        {showDetailsModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        {showDetailsModal && isMounted && createPortal(
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4"
+            data-modal-portal
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 999999,
+              width: '100vw',
+              height: '100vh',
+              overflow: 'hidden'
+            }}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setShowDetailsModal(false);
+              }
+            }}
+          >
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               className="bg-white rounded-xl max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl"
+              data-modal-content
+              style={{
+                position: 'relative',
+                zIndex: 1000000,
+                maxWidth: '90vw',
+                maxHeight: '90vh'
+              }}
             > 
-              <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-center">
+              <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-center z-10">
                 <h2 className="text-2xl font-bold text-gray-900">Detailed Category Guidelines</h2>
                 <button
                   onClick={() => setShowDetailsModal(false)}
@@ -326,7 +404,8 @@ export default function SoarFest() {
                 ))}
               </div>
             </motion.div>
-          </div>
+          </div>,
+          document.body
         )}
       </div>
     </section>

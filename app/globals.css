@@ -121,6 +121,24 @@ h4 {
   font-size: clamp(1rem, 2.5vw, 1.5rem);
 }
 
+/* Modal isolation styles */
+body.modal-open {
+  overflow: hidden !important;
+}
+
+/* Ensure modal portal has maximum z-index */
+[data-modal-portal] {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 999999 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  pointer-events: auto !important;
+}
+
 /* Accessibility improvements */
 @media (prefers-reduced-motion: reduce) {
   * {
