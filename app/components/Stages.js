@@ -122,7 +122,7 @@ export default function Stages() {
 
           <div className="space-y-8 md:space-y-12">
             {[
-              { name: "Prominanace World School, Noida", state: "Delhi NCR", icon: "🏙️", date: "6th December 2025", color: "bg-orange-500" },
+              { name: "Prominence World School, Noida", state: "Delhi NCR", icon: "🏙️", date: "6th December 2025", color: "bg-orange-500" },
               { name: "Allen House Rooma School, Kanpur ", state: "Uttar Pradesh", icon: "🌆", date: "19th December 2025", color: "bg-orange-600" },
               { name: "Kolkata", state: "West Bengal", icon: "🏛️", date: "Announced Soon", color: "bg-red-500" },
               { name: "Jabalpur", state: "Madhya Pradesh", icon: "🏛️", date: "Announced Soon", color: "bg-red-500" },
