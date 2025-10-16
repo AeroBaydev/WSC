@@ -9,7 +9,7 @@ export default function Stages() {
       description: "Register for your chosen category and submit your initial ideas, reports, or videos online.",
       icon: "📝",
       color: "bg-orange-500",
-      date: "15th October 2025",
+      date: "5th November 2025",
     },
     {
       stage: "Stage 2",
@@ -225,7 +225,7 @@ export default function Stages() {
                 >
                   <div className="text-3xl mb-3">📝</div>
                   <h4 className="font-bold text-lg mb-2">Registration Deadline</h4>
-                  <p className="text-orange-100 text-sm">15th October 2025</p>
+                  <p className="text-orange-100 text-sm">5th November 2025</p>
                 </motion.div>
                 <motion.div
                   whileHover={{ scale: 1.05 }}

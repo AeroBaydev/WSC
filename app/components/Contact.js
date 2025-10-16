@@ -188,7 +188,7 @@ export default function Contact() {
               <h4 className="text-xl font-bold text-gray-900 mb-4">Important Dates</h4>
               <div className="space-y-3">
                 <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
-                  <p className="text-orange-700 font-semibold text-sm">📅 Registration Closes: 15th October 2025</p>
+                  <p className="text-orange-700 font-semibold text-sm">📅 Registration Closes: 5th November 2025</p>
                 </div>
               </div>
             </div>

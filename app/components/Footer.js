@@ -137,7 +137,7 @@ export default function Footer() {
                   📞 +91 9266300825
                 </a>
               </p>
-              <p>📅 Registration Closes: 15th Oct 2025</p>
+              <p>📅 Registration Closes: 5th November 2025</p>
               <p>
                 <a
                   href="https://www.instagram.com/wsc_india/#"
