@@ -125,8 +125,8 @@ export default function Stages() {
               { name: "Prominence World School, Noida", state: "Delhi NCR", icon: "🏙️", date: "6th December 2025", color: "bg-orange-500" },
               { name: "Allen House Rooma School, Kanpur ", state: "Uttar Pradesh", icon: "🌆", date: "19th December 2025", color: "bg-orange-600" },
               { name: "Calcutta Public School Kalikapur, Kolkata", state: "West Bengal", icon: "🏛️", date: "Announced Soon", color: "bg-red-500" },
-              { name: "Centre Point School International, Nagpur", state: "Maharashtra", icon: "🏢", date: "Announced Soon", color: "bg-orange-500" },
-              { name: "Jabalpur", state: "Madhya Pradesh", icon: "🏛️", date: "Announced Soon", color: "bg-red-500" },
+              // { name: "Centre Point School International, Nagpur", state: "Maharashtra", icon: "🏢", date: "Announced Soon", color: "bg-orange-500" },
+              { name: "Jabalpur", state: "Madhya Pradesh", icon: "🏢", date: "Announced Soon", color: "bg-red-500" },
               { name: "Mumbai", state: "Maharashtra", icon: "🏘️", date: "Announced Soon", color: "bg-red-600" },
               
             ].map((location, index) => (
