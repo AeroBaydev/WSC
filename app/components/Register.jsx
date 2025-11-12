@@ -548,7 +548,7 @@ export default function Register() {
                 </motion.button>
               </SignInButton>
               <p className="text-sm text-gray-500 mt-4">
-                Registration closes on <span className="font-semibold text-orange-600">5th November 2025</span>
+                Registration closes on <span className="font-semibold text-orange-600">Registration Closed</span>
               </p>
             </div>
           </motion.div>
@@ -933,7 +933,7 @@ export default function Register() {
                   Choose your category from World Skill Challenge or SoarFest and compete for exciting cash prizes
                 </p>
                 <div className="mt-6 bg-orange-50 border border-orange-200 rounded-lg p-4">
-                  <p className="text-orange-700 font-semibold">📅 Registration Deadline: 5th November 2025</p>
+                  <p className="text-orange-700 font-semibold">Kudos for taking the first step towards becoming an innovator! 🌟 We’re currently gearing up for the regionals and nationals, and we’d be thrilled to see you at the event! 🚀👏</p>
                 </div>
               </motion.div>
 

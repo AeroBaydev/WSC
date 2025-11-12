@@ -190,7 +190,7 @@ export default function Categories() {
         "• Rules & Specs: Submission format – PPT/PDF. Students must bring their own devices. Professional conduct required.",
         "• Judging: Creativity, feasibility, market potential, impact, and communication.",
         "• Pro Tip: Highlight value proposition, scalability, and practical implementation.",
-        "• Note: Last date for submission of proposal is 30th October 2025 on info@worldskillchallenge.com",
+        "• Note: Last date for submission of proposal is 20th November 2025 on info@worldskillchallenge.com",
       ],
     },
   
@@ -221,7 +221,7 @@ export default function Categories() {
       details: [
         "• Overview: Robotics challenge where students design solutions to social/environmental challenges under the theme 'Robotics for Sustainable Future'.",
         "• Eligibility: Teams of 3–5 students. Open to Grades 6–12.",
-        "• Format: Stage 1 – Problem selection + Proposal submission deadline: 30th October 2025 (report to info@worldskillchallenge.com). Stage 2 – Live demo day showcase. Stage 3 – National Finals pitch + testing.",
+        "• Format: Stage 1 – Problem selection + Proposal submission deadline: 20th November 2025 (report to info@worldskillchallenge.com). Stage 2 – Live demo day showcase. Stage 3 – National Finals pitch + testing.",
         "• Rules & Specs: Must demonstrate design, execution, and societal benefit.",
         "• Judging: Innovation & Design (30%), Technical Functionality (30%), Social/Environmental Impact (20%), Presentation & Communication (20%).",
         

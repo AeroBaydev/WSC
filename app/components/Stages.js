@@ -9,7 +9,7 @@ export default function Stages() {
       description: "Register for your chosen category and submit your initial ideas, reports, or videos online.",
       icon: "📝",
       color: "bg-orange-500",
-      date: "5th November 2025",
+      date: "Regsitration Closed",
     },
     {
       stage: "Stage 2",
@@ -18,7 +18,7 @@ export default function Stages() {
         "Present your projects live at regional centers. Showcase your innovations and compete with local teams.",
       icon: "🏆",
       color: "bg-orange-600",
-      date: "Mid of November 2025 (Tentative)",
+      date: " Mentioned Below With Complete Details",
     },
     {
       stage: "Stage 3",
@@ -27,7 +27,7 @@ export default function Stages() {
         "Top teams from each region compete at the National Finale. The ultimate showdown with industry leaders in attendance.",
       icon: "🥇",
       color: "bg-red-500",
-      date: "December 2025 (Tentative)",
+      date: "January 2026",
     },
     {
       stage: "Stage 4",
@@ -122,13 +122,46 @@ export default function Stages() {
 
           <div className="space-y-8 md:space-y-12">
             {[
-              { name: "Prominence World School, Noida", state: "Delhi NCR", icon: "🏙️", date: "6th December 2025", color: "bg-orange-500" },
-              { name: "Allen House Rooma School, Kanpur ", state: "Uttar Pradesh", icon: "🌆", date: "19th December 2025", color: "bg-orange-600" },
-              { name: "Calcutta Public School Kalikapur, Kolkata", state: "West Bengal", icon: "🏛️", date: "Announced Soon", color: "bg-red-500" },
-              // { name: "Centre Point School International, Nagpur", state: "Maharashtra", icon: "🏢", date: "Announced Soon", color: "bg-orange-500" },
-              { name: "Jabalpur", state: "Madhya Pradesh", icon: "🏢", date: "Announced Soon", color: "bg-red-500" },
-              { name: "Mumbai", state: "Maharashtra", icon: "🏘️", date: "Announced Soon", color: "bg-red-600" },
-              
+              {
+                name: "GD Goenka International School, Jabalpur",
+                state: "Madhya Pradesh",
+                icon: "🏢",
+                date: "29th November 2025",
+                color: "bg-red-500",
+                mapUrl: "https://www.google.com/maps/search/?api=1&query=GD+Goenka+International+School+Jabalpur",
+              },
+              {
+                name: "Prominence World School, Noida",
+                state: "Delhi NCR",
+                icon: "🏙️",
+                date: "6th December 2025",
+                color: "bg-orange-500",
+                mapUrl: "https://www.google.com/maps/search/?api=1&query=Prominence+World+School+Noida",
+              },
+              {
+                name: "Calcutta Public School, Kalikapur",
+                state: "West Bengal",
+                icon: "🏛️",
+                date: "13th December 2025",
+                color: "bg-red-500",
+                mapUrl: "https://www.google.com/maps/search/?api=1&query=Calcutta+Public+School+Kalikapur+Kolkata",
+              },
+              {
+                name: "AllenHouse Public School, Rooma ",
+                state: "Uttar Pradesh",
+                icon: "🌆",
+                date: "19th December 2025",
+                color: "bg-orange-600",
+                mapUrl: "https://www.google.com/maps/search/?api=1&query=Allen+House+Rooma+School+Kanpur",
+              },
+              {
+                name: "Maharashtra",
+                state: "Maharashtra",
+                icon: "🏘️",
+                date: "Announced Soon",
+                color: "bg-red-600",
+                mapUrl: "https://www.google.com/maps/search/?api=1&query=Maharashtra",
+              },
             ].map((location, index) => (
               <motion.div
                 key={location.name}
@@ -144,9 +177,15 @@ export default function Stages() {
                     className="bg-white rounded-lg p-6 md:p-8 shadow-lg border border-gray-100"
                   >
                     <div className="flex items-center mb-4">
-                      <div className={`w-12 h-12 ${location.color} rounded-full flex items-center justify-center mr-4`}>
+                      <a
+                        href={location.mapUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`w-12 h-12 ${location.color} rounded-full flex items-center justify-center mr-4 transition-transform duration-200 hover:scale-105 focus-visible:scale-105`}
+                        aria-label={`Open map for ${location.name}`}
+                      >
                         <span className="text-xl md:text-2xl">{location.icon}</span>
-                      </div>
+                      </a>
                       <div>
                         <h3 className="text-base md:text-lg font-bold text-orange-500">Regional: <span className="text-violet-500">{location.state} @ {location.date}</span></h3>
                         <h4 className="text-lg md:text-xl font-bold text-gray-900">{location.name}</h4>
@@ -162,11 +201,15 @@ export default function Stages() {
                 </div>
 
                 <div className="w-full md:w-1/2 flex justify-center">
-                  <div
-                    className={`w-16 h-16 md:w-20 md:h-20 ${location.color} rounded-full flex items-center justify-center`}
+                  <a
+                    href={location.mapUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`w-16 h-16 md:w-20 md:h-20 ${location.color} rounded-full flex items-center justify-center transition-transform duration-200 hover:scale-110 focus-visible:scale-110`}
+                    aria-label={`Open map for ${location.name}`}
                   >
                     <span className="text-2xl md:text-3xl">{location.icon}</span>
-                  </div>
+                  </a>
                 </div>
               </motion.div>
             ))}
@@ -225,8 +268,8 @@ export default function Stages() {
                   className="bg-white/20 rounded-xl p-6 backdrop-blur-sm border border-white/30"
                 >
                   <div className="text-3xl mb-3">📝</div>
-                  <h4 className="font-bold text-lg mb-2">Registration Deadline</h4>
-                  <p className="text-orange-100 text-sm">5th November 2025</p>
+                  <h4 className="font-bold text-lg mb-2">Registration Closed</h4>
+                  <p className="text-orange-100 text-sm">😎</p>
                 </motion.div>
                 <motion.div
                   whileHover={{ scale: 1.05 }}

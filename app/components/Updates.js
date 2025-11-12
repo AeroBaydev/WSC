@@ -8,14 +8,14 @@ export default function Updates() {
       title: "Registration & Submission",
       date: "September-October 2025",
       description: "Open registration and project submission period",
-      status: "Ongoing",
+      status: "Completed",
     },
     {
       phase: "Phase 2",
       title: "Initial Screening",
       date: "November 2025",
       description: "Evaluation and shortlisting of submissions",
-      status: "upcoming",
+      status: "Ongoing",
     },
     {
       phase: "Phase 3",

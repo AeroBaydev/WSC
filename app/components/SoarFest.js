@@ -138,7 +138,7 @@ export default function SoarFest() {
     "Wing-shot Championship": {
       title: "Wing-shot Championship (Catapult Gliders)",
       details: [
-        "• Age Group: Grades 6–12",
+        "• Age Group: Grades 3–8",
         "• Team: Up to 3 students + 1 mentor",
         "• Engineering: Teams will be provided unfinished, disassembled glider parts and must sand and assemble within the given time.",
         "• Flight Performance: Gliders must be launched to achieve the longest flight duration.",
@@ -150,7 +150,7 @@ export default function SoarFest() {
     "RocketMania": {
       title: "RocketMania (Rocketry)",
       details: [
-        "• Age Group: Grades 6–12",
+        "• Age Group: Grades 3–8",
         "• Team: Up to 3 students + 1 mentor",
         "• Engineering: Teams will be provided raw materials and must assemble their rocket within the designated time.",
         "• Launch Performance: Rockets will be evaluated on altitude, stability, and controlled descent. All launches at identical pressure for fairness.",
@@ -162,7 +162,7 @@ export default function SoarFest() {
     "DroneX Kids": {
       title: "DroneX Kids (Mini Drone Flying)",
       details: [
-        "• Age Group: Grades 6–12 (Primary-level event in festival)",
+        "• Age Group: Grades 3–5",
         "• Team: Up to 3 students + 1 mentor",
         "• Technical Viva: Teams will be asked basic drone-related questions before flying.",
         "• Flying: One designated pilot flies mini drones (provided at venue) through landing/accuracy challenges.",
