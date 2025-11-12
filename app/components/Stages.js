@@ -131,7 +131,7 @@ export default function Stages() {
                 mapUrl: "https://www.google.com/maps/search/?api=1&query=GD+Goenka+International+School+Jabalpur",
               },
               {
-                name: "Prominence World School, Noida",
+                name: "Prominence World School, Greater Noida",
                 state: "Delhi NCR",
                 icon: "🏙️",
                 date: "6th December 2025",
@@ -232,8 +232,8 @@ export default function Stages() {
                   viewport={{ once: true }}
                   className="mb-6"
                 >
-                  <h3 className="text-2xl md:text-4xl font-bold text-white mb-2">📍 More Locations Coming Soon!</h3>
-                  <p className="text-orange-100 text-lg">Additional regional centers will be announced soon to ensure accessibility across India.</p>
+                  <h3 className="text-2xl md:text-4xl font-bold text-white mb-2">📍 Nationals Location and Date Revealing Soon!</h3>
+                  <p className="text-orange-100 text-lg">Nationals centers will be announced soon to ensure accessibility across India.</p>
                 </motion.div>
               </div>
             </div>
