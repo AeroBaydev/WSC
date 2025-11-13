@@ -277,7 +277,7 @@ export default function Stages() {
                 >
                   <div className="text-3xl mb-3">🏆</div>
                   <h4 className="font-bold text-lg mb-2">Regional Rounds</h4>
-                  <p className="text-orange-100 text-sm">Mid of November 2025 (Tentative)</p>
+                  <p className="text-orange-100 text-sm">Mentioned Above With Complete Details</p>
                 </motion.div>
                 <motion.div
                   whileHover={{ scale: 1.05 }}
@@ -285,7 +285,7 @@ export default function Stages() {
                 >
                   <div className="text-3xl mb-3">🥇</div>
                   <h4 className="font-bold text-lg mb-2">National Finale</h4>
-                  <p className="text-orange-100 text-sm">December 2025 (Tentative)</p>
+                  <p className="text-orange-100 text-sm">January 2026</p>
                 </motion.div>
               </div>
             </div>

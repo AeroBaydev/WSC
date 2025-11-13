@@ -221,7 +221,7 @@ export default function Register() {
     },
     {
       title: "Wing-shot Championship",
-      subtitle: "Primary",
+      subtitle: "Catapult Glider building and flying",
       price: "₹2,499",
       description: "Build and launch gliders with precision",
       features: [
@@ -239,7 +239,7 @@ export default function Register() {
     },
     {
       title: "RocketMania",
-      subtitle: "Primary",
+      subtitle: "Rocketry building and flying",
       price: "₹2,499",
       description: "Build and launch rockets to new heights",
       features: [
@@ -257,7 +257,7 @@ export default function Register() {
     },
     {
       title: "DroneX Kids",
-      subtitle: "Primary",
+      subtitle: "Mini Drone Flying",
       price: "₹2,499",
       description: "Master drone flying with precision challenges",
       features: [
@@ -275,7 +275,7 @@ export default function Register() {
     },
     {
       title: "Wing Warriors",
-      subtitle: "Junior & Senior (Grade 6-12)",
+      subtitle: "RC Plane Making and Flying",
       price: "₹4,165",
       description: "Design and build your own RC aircraft",
       features: [
@@ -293,7 +293,7 @@ export default function Register() {
     },
     {
       title: "Throttle Titans",
-      subtitle: "Junior & Senior (Grade 6-12)",
+      subtitle: "RC Plane Flying",
       price: "₹4,165",
       description: "Master RC plane control and precision",
       features: [
@@ -311,7 +311,7 @@ export default function Register() {
     },
     {
       title: "DroneX",
-      subtitle: "Junior & Senior (Grade 6-12)",
+      subtitle: "Big Drone Flying",
       price: "₹5,999",
       description: "Big Drone Flying",
       features: [
