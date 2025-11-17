@@ -155,12 +155,12 @@ export default function Stages() {
                 mapUrl: "https://www.google.com/maps/search/?api=1&query=Allen+House+Rooma+School+Kanpur",
               },
               {
-                name: "Maharashtra",
+                name: "⁠Meena Bhujbal School of Excellence, Nashik",
                 state: "Maharashtra",
                 icon: "🏘️",
-                date: "Announced Soon",
+                date: "11th January 2026",
                 color: "bg-red-600",
-                mapUrl: "https://www.google.com/maps/search/?api=1&query=Maharashtra",
+                mapUrl: "https://maps.app.goo.gl/ggRb49bA8K4UDZHZ8",
               },
             ].map((location, index) => (
               <motion.div
