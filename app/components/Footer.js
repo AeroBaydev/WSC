@@ -342,7 +342,7 @@ export default function Footer() {
                   { src: "/images/stemed-logo.png", alt: "STEM Educational Research" },
                   { src: "/images/AMAILOGO.png", alt: "Aero Modellers Association of India" },
                   { src: "/images/NSDCLOGO.png", alt: "NSDC" },
-                  { src: "/images/skillindialogo.png", alt: "Skill India" },
+                  // { src: "/images/skillindialogo.png", alt: "Skill India" },
                 ].map((sponsor, i) => (
                   <motion.div key={i} whileHover={{ scale: 1.08 }}>
                     <Image

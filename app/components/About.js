@@ -48,12 +48,12 @@ export default function About() {
       width: 120,
       height: 50,
     },
-    {
-      name: "Skill India",
-      logo: "/images/skillindialogo.png",
-      width: 120,
-      height: 50,
-    },
+    // {
+    //   name: "Skill India",
+    //   logo: "/images/skillindialogo.png",
+    //   width: 120,
+    //   height: 50,
+    // },
   ]
 
   return (
@@ -226,7 +226,7 @@ export default function About() {
           className="bg-white rounded-lg p-8 card-shadow"
         >
           <h3 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-8">Ecosystem Partner</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 items-center justify-items-center">
             {sponsors.map((sponsor, index) => (
               <motion.div
                 key={sponsor.name}
