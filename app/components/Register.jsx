@@ -17,7 +17,6 @@ export default function Register() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [userCategories, setUserCategories] = useState([])
-  const [showRegistrationClosedModal, setShowRegistrationClosedModal] = useState(false)
 
   useEffect(() => {
     const checkRegistration = async () => {
@@ -331,20 +330,20 @@ export default function Register() {
   ]
 
   const categoryFormBaseUrls = {
-    "STARS & BEYOND": "#",
-    "IDEA TANK": "#",
-    "MYSTERY MAKERS": "#",
-    "TECH FOR GOOD": "#",
-    "TECH THROTTLE -> RC CAR": "#",
-    "TECH THROTTLE -> BATTLEBOT": "#",
-    "TECH THROTTLE -> BATTLEBOT: FOOTBALL EDITION": "#",
-    "ESPORTS SHOWDOWN": "#",
-    "Wing-shot Championship": "#",
-    "RocketMania": "#",
-    "DroneX Kids": "#",
-    "Wing Warriors": "#",
-    "Throttle Titans": "#",
-    "DroneX": "#",
+    "STARS & BEYOND": "https://zfrmz.in/uceTMsCZhDwKLXaBgRFp",
+    "IDEA TANK": "https://zfrmz.in/Ec4tst5jEYqPejUFbXWc",
+    "MYSTERY MAKERS": "https://zfrmz.in/N2uZa2uydmyoLnNTJ7eB",
+    "TECH FOR GOOD": "https://zfrmz.in/x2bBTpLfQ5aQn7cUdtWQ",
+    "TECH THROTTLE -> RC CAR": "https://zfrmz.in/j0AQqkIeK5jeiFXAgpLx",
+    "TECH THROTTLE -> BATTLEBOT": "https://zfrmz.in/Rz5KfK3i7ERghE0qiXCS",
+    "TECH THROTTLE -> BATTLEBOT: FOOTBALL EDITION": "https://zfrmz.in/3p1wjytUNng82z29zsfp",
+    "ESPORTS SHOWDOWN": "https://zfrmz.in/f0z9a1DWTenRjUEpvL3A",
+    "Wing-shot Championship": "https://zfrmz.in/8r1qtBCU6nTf4PtgmKNc",
+    "RocketMania": "https://zfrmz.in/wdUv9AqpQ1E5jkEQYldV",
+    "DroneX Kids": "https://zfrmz.in/3bKeY8w0GkXZGOKoh3iU",
+    "Wing Warriors": "https://zfrmz.in/AbvURV2DGcL1QlVx1yHo",
+    "Throttle Titans": "https://zfrmz.in/UQFJ4SIZwTjDjRu7lnmW",
+    "DroneX": "https://zfrmz.in/PxfxhCE9pqvCQwZgSzlj",
   }
 
   const buildZohoFormUrl = (categoryTitle) => {
@@ -407,11 +406,6 @@ export default function Register() {
 
   const isRegisteredInCategory = (categoryTitle) => {
     return getCategoryStatus(categoryTitle) === "registered"
-  }
-
-  const handleRegistrationClosedClick = (e) => {
-    e.preventDefault()
-    setShowRegistrationClosedModal(true)
   }
 
   return (
@@ -838,8 +832,7 @@ export default function Register() {
                                 </div>
                               ) : (
                                 <motion.a
-                                  href={isFailed ? buildZohoFormUrl(tier.title) : "#"}
-                                  onClick={!isFailed ? handleRegistrationClosedClick : undefined}
+                                  href={buildZohoFormUrl(tier.title)}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   whileHover={{ scale: 1.05 }}
@@ -847,7 +840,7 @@ export default function Register() {
                                   className={`block w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r ${tier.color} hover:opacity-90 transition-opacity text-sm text-center`}
                                   aria-label={`Register for ${tier.title}`}
                                 >
-                                  {isFailed ? "Retry Registration" : "Registration Closed"}
+                                  {isFailed ? "Retry Registration" : "Register Now"}
                                 </motion.a>
                               )}
                             </div>
@@ -935,10 +928,13 @@ export default function Register() {
                     {user?.firstName}!
                   </span>
                 </h2>
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8">Registration Closed</h3>
+                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8">Register Now</h3>
                 <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Registration for the event has closed. Thank you for your interest in participating.
+                  Choose your category from World Skill Challenge or SoarFest and compete for exciting cash prizes
                 </p>
+                <div className="mt-6 bg-orange-50 border border-orange-200 rounded-lg p-4">
+                  <p className="text-orange-700 font-semibold">Kudos for taking the first step towards becoming an innovator! 🌟 We’re currently gearing up for the regionals and nationals, and we’d be thrilled to see you at the event! 🚀👏</p>
+                </div>
               </motion.div>
 
               {/* Event Type Tabs */}
@@ -1023,8 +1019,7 @@ export default function Register() {
                             </div>
                           ) : (
                             <motion.a
-                              href={isFailed ? buildZohoFormUrl(tier.title) : "#"}
-                              onClick={!isFailed ? handleRegistrationClosedClick : undefined}
+                              href={buildZohoFormUrl(tier.title)}
                               target="_blank"
                               rel="noopener noreferrer"
                               whileHover={{ scale: 1.05 }}
@@ -1032,7 +1027,7 @@ export default function Register() {
                               className={`block w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r ${tier.color} hover:opacity-90 transition-opacity text-sm text-center`}
                               aria-label={`Register for ${tier.title}`}
                             >
-                              {isFailed ? "Retry Registration" : "Registration Closed"}
+                              {isFailed ? "Retry Registration" : "Register Now"}
                             </motion.a>
                           )}
                         </div>
@@ -1096,44 +1091,6 @@ export default function Register() {
           )}
         </SignedIn>
       </div>
-      {showRegistrationClosedModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center px-4 py-8">
-          <div
-            className="absolute inset-0 bg-black/60"
-            onClick={() => setShowRegistrationClosedModal(false)}
-            aria-label="Close registration closed notification"
-          ></div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 10 }}
-            transition={{ duration: 0.25 }}
-            className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center z-10"
-          >
-            <button
-              type="button"
-              onClick={() => setShowRegistrationClosedModal(false)}
-              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition-colors"
-              aria-label="Close message"
-            >
-              ✕
-            </button>
-            <div className="text-5xl mb-4">🙏</div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-3">Thank you for your excitement!</h3>
-            <p className="text-gray-600 mb-6 text-base">
-              Registration for this category has closed. We&apos;re thrilled by your interest—cheer on the regional rounds
-              and we can&apos;t wait to welcome you back next season!
-            </p>
-            <button
-              type="button"
-              onClick={() => setShowRegistrationClosedModal(false)}
-              className="w-full rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold px-6 py-3 shadow-lg hover:shadow-xl transition-all"
-            >
-              Got it, thanks!
-            </button>
-          </motion.div>
-        </div>
-      )}
     </section>
   )
 }
