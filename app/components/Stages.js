@@ -150,7 +150,7 @@ export default function Stages() {
                 name: "AllenHouse Public School, Rooma ",
                 state: "Uttar Pradesh",
                 icon: "🌆",
-                date: "19th December 2025",
+                date: "20th December 2025",
                 color: "bg-orange-600",
                 mapUrl: "https://www.google.com/maps/search/?api=1&query=Allen+House+Rooma+School+Kanpur",
               },
