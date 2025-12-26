@@ -34,6 +34,15 @@ A modern, production-ready website for the World Skill Challenge – Crafting Ch
   - Webhook verifies signature and persists to MongoDB
   - Prevents duplicate registrations per category (server + UI)
   - Redirects to success page and confirms registration
+- **Strict Exam-Grade Quiz System**
+  - 30 multiple-choice questions, 30-minute time limit
+  - Mandatory registration before quiz access
+  - Server-controlled timer (no client manipulation)
+  - Fullscreen enforcement with auto-submit on exit
+  - Tab/browser switch detection
+  - Heartbeat system (5-second intervals, 10-second timeout)
+  - One attempt per user, permanent session lock after submission
+  - Anti-cheating measures: disabled right-click, copy/paste, keyboard shortcuts
 - **Content Pages**: Home, FAQ, Updates, Contact
 - **SEO**: `robots.js`, `sitemap.js`, `SEOHead` component
 
@@ -57,7 +66,12 @@ WSC/
 │  │  ├── register/route.js
 │  │  ├── save-user/route.js
 │  │  ├── mark-registered/route.ts
-│  │  └── webhook/zoho-success/route.ts
+│  │  ├── webhook/zoho-success/route.ts
+│  │  └── quiz/
+│  │     ├── register/route.js
+│  │     ├── questions/route.js
+│  │     ├── heartbeat/route.js
+│  │     └── submit/route.js
 │  ├── components/
 │  │  ├── About.js
 │  │  ├── Categories.js
@@ -75,6 +89,10 @@ WSC/
 │  ├── faq/page.js
 │  ├── updates/page.js
 │  ├── registration-success/page.tsx
+│  └── quiz/
+│     ├── register/page.js
+│     ├── take/page.js
+│     └── success/page.js
 │  ├── globals.css
 │  ├── layout.js
 │  ├── page.js
@@ -89,7 +107,10 @@ WSC/
 ├── lib/
 │  ├── dbConnect.ts
 │  ├── userModel.ts
-│  └── utils.ts
+│  ├── utils.ts
+│  ├── quizSessionModel.js
+│  ├── quizQuestions.js
+│  └── jwtUtils.js
 ├── middleware.ts
 ├── public/
 │  └── images/* and assets
@@ -135,6 +156,9 @@ ADMIN_SEED_SECRET=your_admin_secret_key
 
 # Optional: Dynamic Coupons
 COUPONS_JSON=[{"code":"NEHA20","discountType":"percent","amount":20,"active":true}]
+
+# Quiz System (JWT for session tokens)
+JWT_SECRET=your-super-secret-jwt-key-change-in-production
 ```
 
 Notes:
@@ -160,6 +184,61 @@ npm run dev
 
 4. Open the app
 - `http://localhost:3000`
+
+## 🎯 Quiz System
+
+The quiz system is a strict, exam-grade assessment with comprehensive anti-cheating measures.
+
+### Quiz Flow
+
+1. **Registration** (`/quiz/register`)
+   - User must provide: Full Name, Email, Mentor Name, School Name
+   - Email must be unique (one attempt per email)
+   - Creates quiz session with server-controlled timer
+   - Generates JWT session token
+
+2. **Quiz Taking** (`/quiz/take`)
+   - 30 multiple-choice questions, shuffled order
+   - Options shuffled per question
+   - 30-minute time limit (server-controlled)
+   - One question per screen
+   - Timer display (synced with server)
+
+3. **Anti-Cheating Measures**
+   - **Fullscreen Enforcement**: Auto-submits if fullscreen is exited
+   - **Tab Detection**: Auto-submits if user switches tabs or minimizes browser
+   - **Heartbeat System**: Client sends heartbeat every 5 seconds; server auto-submits if heartbeat stops for 10+ seconds
+   - **Disabled Actions**: Right-click, copy, cut, paste, keyboard shortcuts (Ctrl+C, Ctrl+V, etc.)
+   - **Back Button**: Prevented and triggers auto-submit
+   - **Page Refresh/Close**: Auto-submits on attempt
+
+4. **Submission** (`/quiz/submit`)
+   - Server calculates score (client never sees correct answers)
+   - Session locked permanently after submission
+   - No retry allowed
+
+5. **Success Page** (`/quiz/success`)
+   - Shows confirmation message only
+   - No score or answers displayed
+
+### API Endpoints
+
+- `POST /api/quiz/register` - Register and start quiz session
+- `GET /api/quiz/questions` - Fetch shuffled questions (requires JWT)
+- `POST /api/quiz/heartbeat` - Update heartbeat (called every 5 seconds)
+- `POST /api/quiz/submit` - Submit answers and calculate score
+
+### Environment Variables
+
+- `JWT_SECRET`: Secret key for JWT token generation (required)
+
+### Important Notes
+
+- Timer is **server-controlled** - client timer is for display only
+- Questions and options are shuffled per session
+- One attempt per email address
+- Session statuses: `active`, `submitted`, `auto_submitted`
+- Auto-submission triggers: time expired, heartbeat timeout, fullscreen exit, tab switch, page refresh/close
 
 ## 🔗 Zoho Forms Integration
 
@@ -207,6 +286,14 @@ npm run lint    # Lint
 `lib/userModel.ts`
 - `userId` (Clerk ID), `firstName`, `lastName`, `username`, `schoolName`
 - `categories`: array of `{ category: string, paymentStatus: string, registeredAt: Date }`
+
+`lib/quizSessionModel.js`
+- `email`, `fullName`, `mentorName`, `schoolName`
+- `sessionToken` (JWT), `startTime`, `endTime`, `lastHeartbeat`
+- `status`: 'active' | 'submitted' | 'auto_submitted'
+- `answers`: array of `{ questionId, selectedOption, answeredAt }`
+- `questionOrder`, `optionMappings` (for shuffled questions)
+- `score`, `submittedAt`, `violationReasons`
 
 ## ☁️ Deployment (Vercel)
 

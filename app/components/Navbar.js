@@ -24,6 +24,13 @@ export default function Navbar() {
     { label: "Contact", anchor: "contact" },
   ]
 
+  // Handle quiz navigation separately (it's a route, not an anchor)
+  const handleQuizClick = () => {
+    router.push("/quiz/register")
+    setIsOpen(false)
+    setIsMoreOpen(false)
+  }
+
   // Handle scroll behavior for navbar visibility
   useEffect(() => {
     const handleScroll = () => {
@@ -128,6 +135,12 @@ export default function Navbar() {
                     Guidelines
                   </a> */}
                   <button
+                    onClick={handleQuizClick}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-500 transition-colors font-semibold"
+                  >
+                    🎯 Quiz Assessment
+                  </button>
+                  <button
                     onClick={() => {
                       router.push("/updates")
                       setIsMoreOpen(false)
@@ -229,6 +242,12 @@ export default function Navbar() {
 
             <div className="border-t border-gray-200 mt-3 pt-3">
               <div className="text-sm font-medium text-gray-900 mb-2">More</div>
+              <button
+                onClick={handleQuizClick}
+                className="block w-full text-left text-gray-700 hover:text-orange-500 py-1 text-sm font-semibold"
+              >
+                🎯 Quiz Assessment
+              </button>
               <a
                 href="https://workdrive.zoho.in/folder/1nsamfc18e91dad8f439fafa11477539db613"
                 target="_blank"

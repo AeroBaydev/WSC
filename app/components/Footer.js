@@ -100,6 +100,7 @@ export default function Footer() {
                   { name: "Categories", url: "#categories" },
                   { name: "Stages", url: "#stages" },
                   { name: "Register", url: "#register" },
+                  { name: "Quiz Assessment", url: "/quiz/register" },
                   { name: "Contact", url: "#contact" },
                   { name: "FAQ", url: "/faq" },
                   { name: "Updates", url: "/updates" }
