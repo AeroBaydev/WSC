@@ -1,6 +1,7 @@
 "use client"
 import { motion } from "framer-motion"
 import Image from "next/image"
+import Link from "next/link"
 import {
   Dialog,
   DialogTrigger,
@@ -96,23 +97,23 @@ export default function Footer() {
             <nav aria-label="Quick navigation links">
               <ul className="space-y-2 text-sm" role="list">
                 {[
-                  { name: "About", url: "#about" },
-                  { name: "Categories", url: "#categories" },
-                  { name: "Stages", url: "#stages" },
-                  { name: "Register", url: "#register" },
+                  { name: "About", url: "/about" },
+                  { name: "ExperienceX", url: "/experiencex" },
+                  { name: "Stages", url: "/stages" },
+                  { name: "Register", url: "/register" },
                   { name: "Quiz Assessment", url: "/quiz/register" },
-                  { name: "Contact", url: "#contact" },
+                  { name: "Contact", url: "/contact" },
                   { name: "FAQ", url: "/faq" },
                   { name: "Updates", url: "/updates" }
                 ].map((item) => (
                   <li key={item.name}>
-                    <a
+                    <Link
                       href={item.url}
                       className="text-gray-600 hover:text-orange-500 transition-colors"
-                      aria-label={`Navigate to ${item.name} section`}
+                      aria-label={`Navigate to ${item.name} page`}
                     >
                       {item.name}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -138,7 +139,7 @@ export default function Footer() {
                   📞 +91 9266300825
                 </a>
               </p>
-              <p>📅 Nationals : January 2026</p>
+              <p>📅 Nationals : 25th January 2026</p>
               <p>
                 <a
                   href="https://www.instagram.com/wsc_india/#"

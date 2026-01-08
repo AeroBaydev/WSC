@@ -473,8 +473,8 @@ export default function Stages() {
                   viewport={{ once: true }}
                   className="mb-6"
                 >
-                  <h3 className="text-2xl md:text-4xl font-bold text-white mb-2">📍 Nationals Location and Date Revealing Soon!</h3>
-                  <p className="text-orange-100 text-lg">Nationals centers will be announced soon to ensure accessibility across India.</p>
+                  <h3 className="text-2xl md:text-4xl font-bold text-white mb-2">Nationals Date : 25th January 2026</h3>
+                  <p className="text-orange-100 text-lg">Location : The Modern School, Faridabad</p>
                 </motion.div>
               </div>
             </div>

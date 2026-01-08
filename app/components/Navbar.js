@@ -2,6 +2,7 @@
 import { motion } from "framer-motion"
 import { useState, useEffect } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { SignInButton, UserButton, useUser } from "@clerk/nextjs"
 import { useRouter, usePathname } from "next/navigation"
 
@@ -15,13 +16,13 @@ export default function Navbar() {
   const pathname = usePathname()
 
   const navItems = [
-    { label: "About", anchor: "about" },
-    { label: "ExperienceX", anchor: "experiencex" },
-    { label: "SoarFest", anchor: "soarfest" },
-    { label: "Stages", anchor: "stages" },
-    // { label: "Market Place", anchor: "MarketPlace" }, // <-- Add this line
-    { label: "Register", anchor: "register" },
-    { label: "Contact", anchor: "contact" },
+    { label: "About", href: "/about" },
+    { label: "ExperienceX", href: "/experiencex" },
+    { label: "SoarFest", href: "/soarfest" },
+    { label: "Stages", href: "/stages" },
+    // { label: "Market Place", href: "/marketplace" },
+    { label: "Register", href: "/register" },
+    { label: "Contact", href: "/contact" },
   ]
 
   // Handle quiz navigation separately (it's a route, not an anchor)
@@ -57,13 +58,8 @@ export default function Navbar() {
     }
   }, [lastScrollY])
 
-  const handleNavigation = (item) => {
-    const section = item.anchor
-    if (pathname === "/") {
-      document.getElementById(section)?.scrollIntoView({ behavior: "smooth" })
-    } else {
-      router.push(`/#${section}`)
-    }
+  const handleNavigation = (href) => {
+    router.push(href)
     setIsOpen(false)
     setIsMoreOpen(false)
   }
@@ -97,14 +93,20 @@ export default function Navbar() {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-4">
             {navItems.map((item) => (
-              <motion.button
+              <Link
                 key={item.label}
-                onClick={() => handleNavigation(item)}
-                whileHover={{ scale: 1.05 }}
-                className="text-gray-700 hover:text-orange-500 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                href={item.href}
+                onClick={() => setIsMoreOpen(false)}
               >
-                {item.label}
-              </motion.button>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className={`text-gray-700 hover:text-orange-500 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${
+                    pathname === item.href ? "text-orange-500 font-semibold" : ""
+                  }`}
+                >
+                  {item.label}
+                </motion.div>
+              </Link>
             ))}
 
             <div className="relative">
@@ -231,13 +233,16 @@ export default function Navbar() {
             className="md:hidden bg-white rounded-lg mt-2 p-4 shadow-lg border border-gray-100"
           >
             {navItems.map((item) => (
-              <button
+              <Link
                 key={item.label}
-                onClick={() => handleNavigation(item)}
-                className="block w-full text-left text-gray-700 hover:text-orange-500 py-2 text-base font-medium"
+                href={item.href}
+                onClick={() => setIsOpen(false)}
+                className={`block w-full text-left text-gray-700 hover:text-orange-500 py-2 text-base font-medium ${
+                  pathname === item.href ? "text-orange-500 font-semibold" : ""
+                }`}
               >
                 {item.label}
-              </button>
+              </Link>
             ))}
 
             <div className="border-t border-gray-200 mt-3 pt-3">

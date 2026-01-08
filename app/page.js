@@ -1,13 +1,4 @@
-import Navbar from "./components/Navbar"
 import Hero from "./components/Hero"
-import About from "./components/About"
-import ExperienceX from "./components/ExperienceX"
-import SoarFest from "./components/SoarFest"
-// import Marketplace from "./components/MarketPlace"
-import Stages from "./components/Stages"
-import Register from "./components/Register"
-import Contact from "./components/Contact"
-import Footer from "./components/Footer"
 
 export const metadata = {
   alternates: {
@@ -261,18 +252,7 @@ export default function Home() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <div className="min-h-screen">
-        <Navbar />
         <Hero />
-        <About />
-        <section id="experiencex">
-          <ExperienceX />
-        </section>
-        <SoarFest />
-        {/* <Marketplace /> */}
-        <Stages />
-        <Register />
-        <Contact />
-        <Footer />
       </div>
     </>
   )
