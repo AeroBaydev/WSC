@@ -118,9 +118,6 @@ export default function Results() {
                   </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-bold text-gray-900">{result.region}</h3>
-                    {result.schoolName && (
-                      <p className="text-sm text-gray-600 mt-1">{result.schoolName}</p>
-                    )}
                   </div>
                 </div>
                 <p className="text-gray-600 text-sm mb-6">{result.type}</p>
