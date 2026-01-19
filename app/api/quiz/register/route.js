@@ -13,6 +13,7 @@ import { QUIZ_CONFIG } from "@/lib/quizQuestions";
  *   email: string (required, unique)
  *   mentorName: string (required)
  *   schoolName: string (required)
+ *   contactDetails: string (required)
  * }
  */
 export async function POST(request) {
@@ -20,10 +21,10 @@ export async function POST(request) {
     await dbConnect();
 
     const body = await request.json();
-    const { fullName, email, mentorName, schoolName } = body;
+    const { fullName, email, mentorName, schoolName, contactDetails } = body;
 
     // Validate required fields
-    if (!fullName || !email || !mentorName || !schoolName) {
+    if (!fullName || !email || !mentorName || !schoolName || !contactDetails) {
       return NextResponse.json(
         { error: "All fields are required" },
         { status: 400 }
@@ -86,6 +87,7 @@ export async function POST(request) {
       fullName: fullName.trim(),
       mentorName: mentorName.trim(),
       schoolName: schoolName.trim(),
+      contactDetails: contactDetails.trim(),
       sessionToken: tempToken,
       startTime,
       endTime,

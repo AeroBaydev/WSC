@@ -1,8 +1,7 @@
 import { ClerkProvider } from "@clerk/nextjs"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import Navbar from "./components/Navbar"
-import Footer from "./components/Footer"
+import ConditionalLayout from "./components/ConditionalLayout"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -122,9 +121,9 @@ export default function RootLayout({ children }) {
           <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         </head>
         <body className={inter.className}>
-          <Navbar />
-          {children}
-          <Footer />
+          <ConditionalLayout>
+            {children}
+          </ConditionalLayout>
         </body>
       </html>
     </ClerkProvider>
