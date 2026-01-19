@@ -2,6 +2,7 @@
 import { motion } from "framer-motion"
 import Image from "next/image"
 import { useState, useRef, useEffect } from "react"
+import Results from "./Results"
 
 // Video Player Component
 function VideoPlayer({ videoSrc, title, description, location, date, roundNumber, roundLabel, isActive, onPlay, onPause, allVideoRefs, setVideoRef }) {
@@ -481,6 +482,9 @@ export default function Hero() {
           </motion.div>
         </div>
       </section>
+
+      {/* Results Section */}
+      <Results />
     </>
   )
 }

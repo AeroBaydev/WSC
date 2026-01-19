@@ -1,236 +1,135 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 export default function QuizRegisterPage() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    mentorName: "",
-    schoolName: "",
-  });
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState("");
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    // Clear error for this field
-    if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
-    }
-    setSubmitError("");
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = "Full Name is required";
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Invalid email format";
-    }
-
-    if (!formData.mentorName.trim()) {
-      newErrors.mentorName = "Mentor Name is required";
-    }
-
-    if (!formData.schoolName.trim()) {
-      newErrors.schoolName = "School Name is required";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitError("");
-
-    if (!validateForm()) {
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      const response = await fetch("/api/quiz/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Registration failed");
-      }
-
-      // Store token in sessionStorage
-      sessionStorage.setItem("quizToken", data.sessionToken);
-      sessionStorage.setItem("quizStartTime", data.startTime);
-      sessionStorage.setItem("quizEndTime", data.endTime);
-
-      // Redirect to quiz page
-      router.push("/quiz/take");
-
-    } catch (error) {
-      console.error("Registration error:", error);
-      setSubmitError(error.message || "Failed to register. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Quiz Registration
-          </h1>
-          <p className="text-gray-600">
-            World Skill Challenge – Stars and Beyond
-          </p>
-          <p className="text-sm text-gray-500 mt-2">
-            Final Round – MCQ Assessment (Classes 3–5)
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label
-              htmlFor="fullName"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Full Name <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="fullName"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
-                errors.fullName ? "border-red-500" : "border-gray-300"
-              }`}
-              placeholder="Enter your full name"
-              required
-            />
-            {errors.fullName && (
-              <p className="mt-1 text-sm text-red-500">{errors.fullName}</p>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Email <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
-                errors.email ? "border-red-500" : "border-gray-300"
-              }`}
-              placeholder="Enter your email"
-              required
-            />
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-500">{errors.email}</p>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="mentorName"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Mentor Name <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="mentorName"
-              name="mentorName"
-              value={formData.mentorName}
-              onChange={handleChange}
-              className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
-                errors.mentorName ? "border-red-500" : "border-gray-300"
-              }`}
-              placeholder="Enter your mentor's name"
-              required
-            />
-            {errors.mentorName && (
-              <p className="mt-1 text-sm text-red-500">{errors.mentorName}</p>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="schoolName"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              School Name <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="schoolName"
-              name="schoolName"
-              value={formData.schoolName}
-              onChange={handleChange}
-              className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
-                errors.schoolName ? "border-red-500" : "border-gray-300"
-              }`}
-              placeholder="Enter your school name"
-              required
-            />
-            {errors.schoolName && (
-              <p className="mt-1 text-sm text-red-500">{errors.schoolName}</p>
-            )}
-          </div>
-
-          {submitError && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-              {submitError}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="max-w-2xl w-full bg-white rounded-lg shadow-xl p-8 md:p-12"
+      >
+        <div className="text-center">
+          <div className="mb-6">
+            <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg
+                className="w-10 h-10 text-orange-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
             </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            {isSubmitting ? "Registering..." : "Start Quiz"}
-          </button>
-
-          <div className="text-xs text-gray-500 text-center mt-4">
-            <p>⚠️ Important: You can only attempt this quiz once.</p>
-            <p className="mt-1">
-              Duration: 30 minutes | Total Questions: 30
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Quiz Completed
+            </h1>
+            <p className="text-lg text-gray-600 mb-2">
+              World Skill Challenge – Stars and Beyond
             </p>
           </div>
-        </form>
-      </div>
+
+          <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 mb-8">
+            <div className="space-y-4 text-left">
+              <div className="flex items-start gap-3">
+                <svg
+                  className="w-6 h-6 text-orange-600 mt-0.5 flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-2">
+                    Regional Results Are Out!
+                  </h3>
+                  <p className="text-gray-700 leading-relaxed">
+                    The regional round results have been announced. You can view all regional results on the home page.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3 pt-4 border-t border-orange-200">
+                <svg
+                  className="w-6 h-6 text-orange-600 mt-0.5 flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-2">
+                    Nationals Round - Coming Soon
+                  </h3>
+                  <p className="text-gray-700 leading-relaxed">
+                    Qualified candidates for the Nationals Round will be updated soon. Please stay tuned for further announcements.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <motion.button
+              onClick={() => router.push("/")}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+              </svg>
+              View Regional Results
+            </motion.button>
+            <motion.button
+              onClick={() => router.push("/")}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="border-2 border-orange-500 text-orange-500 hover:bg-orange-50 px-8 py-3 rounded-lg font-semibold transition-colors"
+            >
+              Go to Home
+            </motion.button>
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 }
