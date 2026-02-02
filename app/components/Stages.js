@@ -114,98 +114,101 @@ function VideoPlayer({ videoSrc, locationName, videoId, isMuted, onToggleMute })
       ref={containerRef}
       className="relative w-full max-w-lg mx-auto rounded-xl overflow-hidden shadow-xl group bg-gray-900/80 border border-orange-200/60"
     >
-      <video
-        ref={videoRef}
-        src={videoSrc}
-        className="w-full h-auto object-cover"
-        loop
-        muted={isMuted}
-        playsInline
-        aria-label={`Video for ${locationName}`}
-      />
+      {/* Fixed 16:9 frame so all videos (including 1:1) look consistent */}
+      <div className="relative w-full aspect-video">
+        <video
+          ref={videoRef}
+          src={videoSrc}
+          className="w-full h-full object-cover"
+          loop
+          muted={isMuted}
+          playsInline
+          aria-label={`Video for ${locationName}`}
+        />
 
-      {/* Top-left label */}
-      <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/60 text-xs font-semibold text-orange-100 backdrop-blur-sm">
-        {locationName}
-      </div>
-
-      {/* Bottom gradient control bar - appears on hover / focus */}
-      <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2 text-xs text-orange-100">
-          <span
-            className={`h-2 w-2 rounded-full ${
-              isPlaying ? "bg-green-400 animate-pulse" : "bg-orange-300"
-            }`}
-          ></span>
-          <span>{isPlaying ? "Playing" : "Paused"}</span>
+        {/* Top-left label */}
+        <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/60 text-xs font-semibold text-orange-100 backdrop-blur-sm">
+          {locationName}
         </div>
 
-        <div className="flex items-center gap-2">
-          {/* Volume button */}
-          <button
-            type="button"
-            onClick={toggleMute}
-            className="flex items-center justify-center h-9 w-9 rounded-full bg-black/70 hover:bg-black/90 text-white transition-colors"
-            aria-label={isMuted ? "Unmute video" : "Mute video"}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              {isMuted ? (
-                <>
-                  <path d="M9 9L5 12H2v0l3 0 4 3V9z" />
-                  <line x1="16" y1="9" x2="20" y2="13" />
-                  <line x1="20" y1="9" x2="16" y2="13" />
-                </>
-              ) : (
-                <>
-                  <path d="M9 9L5 12H2v0l3 0 4 3V9z" />
-                  <path d="M15 9.5a4 4 0 010 5" />
-                  <path d="M17 7a8 8 0 010 10" />
-                </>
-              )}
-            </svg>
-          </button>
+        {/* Bottom gradient control bar - appears on hover / focus */}
+        <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 text-xs text-orange-100">
+            <span
+              className={`h-2 w-2 rounded-full ${
+                isPlaying ? "bg-green-400 animate-pulse" : "bg-orange-300"
+              }`}
+            ></span>
+            <span>{isPlaying ? "Playing" : "Paused"}</span>
+          </div>
 
-          {/* Fullscreen button */}
-          <button
-            type="button"
-            onClick={toggleFullscreen}
-            className="flex items-center justify-center h-9 px-3 rounded-full bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold transition-colors"
-            aria-label="Toggle fullscreen"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 mr-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+          <div className="flex items-center gap-2">
+            {/* Volume button */}
+            <button
+              type="button"
+              onClick={toggleMute}
+              className="flex items-center justify-center h-9 w-9 rounded-full bg-black/70 hover:bg-black/90 text-white transition-colors"
+              aria-label={isMuted ? "Unmute video" : "Mute video"}
             >
-              {isFullscreen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
-                />
-              )}
-            </svg>
-            {isFullscreen ? "Exit" : "Fullscreen"}
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                {isMuted ? (
+                  <>
+                    <path d="M9 9L5 12H2v0l3 0 4 3V9z" />
+                    <line x1="16" y1="9" x2="20" y2="13" />
+                    <line x1="20" y1="9" x2="16" y2="13" />
+                  </>
+                ) : (
+                  <>
+                    <path d="M9 9L5 12H2v0l3 0 4 3V9z" />
+                    <path d="M15 9.5a4 4 0 010 5" />
+                    <path d="M17 7a8 8 0 010 10" />
+                  </>
+                )}
+              </svg>
+            </button>
+
+            {/* Fullscreen button */}
+            <button
+              type="button"
+              onClick={toggleFullscreen}
+              className="flex items-center justify-center h-9 px-3 rounded-full bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold transition-colors"
+              aria-label="Toggle fullscreen"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 mr-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                {isFullscreen ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
+                  />
+                )}
+              </svg>
+              {isFullscreen ? "Exit" : "Fullscreen"}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -376,6 +379,8 @@ export default function Stages() {
                 date: "13th December 2025",
                 color: "bg-red-500",
                 mapUrl: "https://www.google.com/maps/search/?api=1&query=Calcutta+Public+School+Kalikapur+Kolkata",
+                video: "/video/Kolkata2.mp4",
+                videoId: "kolkata",
               },
               {
                 name: "AllenHouse Public School, Rooma ",
@@ -392,6 +397,8 @@ export default function Stages() {
                 date: "11th January 2026",
                 color: "bg-red-600",
                 mapUrl: "https://maps.app.goo.gl/ggRb49bA8K4UDZHZ8",
+                video: "/video/wscnashik.mp4",
+                videoId: "nashik",
               },
             ].map((location, index) => (
               <motion.div

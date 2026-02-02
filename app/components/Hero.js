@@ -298,6 +298,15 @@ export default function Hero() {
       date: "13th December 2025",
       roundNumber: 3,
       roundLabel: "3rd Regional Round"
+    },
+    {
+      src: "/video/wscnashik.mp4",
+      title: "Meena Bhujbal School of Excellence, Nashik",
+      description: "Regional Round - Maharashtra",
+      location: "Nashik, MH",
+      date: "11th January 2026",
+      roundNumber: 4,
+      roundLabel: "4th Regional Round"
     }
   ]
 
@@ -441,7 +450,7 @@ export default function Hero() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
             {videos.map((video, index) => (
               <VideoPlayer
                 key={video.src}
