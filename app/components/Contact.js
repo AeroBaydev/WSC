@@ -83,7 +83,7 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="py-20 bg-top md:bg-cover bg-contain bg-no-repeat bg-fixed relative" style={{backgroundImage: 'url(/images/ctbg.jpg)'}}>
+    <section id="contact" className="py-20 bg-top md:bg-cover bg-contain bg-no-repeat bg-fixed relative" style={{ backgroundImage: 'url(/images/ctbg.jpg)' }}>
       <div className="absolute inset-0 bg-white/85"></div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
@@ -125,7 +125,13 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="text-gray-900 font-semibold">Email</h4>
-                  <p className="text-gray-600 text-sm md:text-base">info@worldskillchallenge.com</p>
+                  <a
+                    href="mailto:info@worldskillchallenge.com"
+                    className="text-gray-600 text-sm md:text-base hover:text-orange-600 underline"
+                    aria-label="Email us at info@worldskillchallenge.com"
+                  >
+                    info@worldskillchallenge.com
+                  </a>
                 </div>
               </motion.div>
 
@@ -147,6 +153,18 @@ export default function Contact() {
                       <path d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zm0 2h10c1.654 0 3 1.346 3 3v10c0 1.654-1.346 3-3 3H7c-1.654 0-3-1.346-3-3V7c0-1.654 1.346-3 3-3zm11 1.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3zM12 7a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6z" />
                     </svg>
                     Instagram
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/company/world-skill-challenge/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+                    aria-label="Follow us on LinkedIn"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                      <path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6S0 4.88 0 3.5 1.12 1 2.48 1s2.5 1.12 2.5 2.5zM.24 8.98h4.47V24H.24V8.98zM7.98 8.98h4.29v2.05h.06c.6-1.14 2.07-2.35 4.26-2.35 4.56 0 5.41 3 5.41 6.89V24h-4.47v-7.56c0-1.8-.03-4.11-2.5-4.11-2.5 0-2.88 1.95-2.88 3.97V24H7.98V8.98z" />
+                    </svg>
+                    LinkedIn
                   </a>
                   <a
                     href="https://chat.whatsapp.com/DAAiwB4FF83AjxVANWt9YQ"
@@ -179,19 +197,18 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="text-gray-900 font-semibold">Phone</h4>
-                  <p className="text-gray-600 text-sm md:text-base">+91 9266300825</p>
+                  <a
+                    href="tel:+919266300825"
+                    className="text-gray-600 text-sm md:text-base hover:text-orange-600 underline"
+                    aria-label="Call us at +91 9266300825"
+                  >
+                    +91 9266300825
+                  </a>
                 </div>
               </motion.div>
             </div>
 
-            <div className="mt-8">
-              <h4 className="text-xl font-bold text-gray-900 mb-4">Important Dates</h4>
-              <div className="space-y-3">
-                <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
-                  <p className="text-orange-700 font-semibold text-sm">📅 Nationals: 25th January 2026</p>
-                </div>
-              </div>
-            </div>
+            {/* Removed dated Nationals info from contact section as requested */}
           </motion.div>
 
           <motion.div

@@ -137,7 +137,6 @@ export default function Footer() {
                   📞 +91 9266300825
                 </a>
               </p>
-              <p>📅 Nationals : 25th January 2026</p>
               <p>
                 <a
                   href="https://www.instagram.com/wsc_india/#"
@@ -150,6 +149,20 @@ export default function Footer() {
                     <path d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zm0 2h10c1.654 0 3 1.346 3 3v10c0 1.654-1.346 3-3 3H7c-1.654 0-3-1.346-3-3V7c0-1.654 1.346-3 3-3zm11 1.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3zM12 7a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6z" />
                   </svg>
                   Instagram
+                </a>
+              </p>
+              <p>
+                <a
+                  href="https://www.linkedin.com/company/world-skill-challenge/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700"
+                  aria-label="LinkedIn"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                    <path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6S0 4.88 0 3.5 1.12 1 2.48 1s2.5 1.12 2.5 2.5zM.24 8.98h4.47V24H.24V8.98zM7.98 8.98h4.29v2.05h.06c.6-1.14 2.07-2.35 4.26-2.35 4.56 0 5.41 3 5.41 6.89V24h-4.47v-7.56c0-1.8-.03-4.11-2.5-4.11-2.5 0-2.88 1.95-2.88 3.97V24H7.98V8.98z" />
+                  </svg>
+                  LinkedIn
                 </a>
               </p>
               <p>
