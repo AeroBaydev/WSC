@@ -138,7 +138,7 @@ const REGIONAL_LOCATIONS = [
   { name: "GD Goenka International School, Jabalpur", state: "Madhya Pradesh", icon: "🏢", date: "29th November 2025", color: "bg-red-500", mapUrl: "https://www.google.com/maps/search/?api=1&query=GD+Goenka+International+School+Jabalpur", video: "/video/jabalpur.mp4", videoId: "jabalpur" },
   { name: "Prominence World School, Greater Noida", state: "Delhi NCR", icon: "🏙️", date: "6th December 2025", color: "bg-orange-500", mapUrl: "https://www.google.com/maps/search/?api=1&query=Prominence+World+School+Noida", video: "/video/prominence.mp4", videoId: "prominence" },
   { name: "Calcutta Public School, Kalikapur", state: "West Bengal", icon: "🏛️", date: "13th December 2025", color: "bg-red-500", mapUrl: "https://www.google.com/maps/search/?api=1&query=Calcutta+Public+School+Kalikapur+Kolkata", video: "/video/Kolkata2.mp4", videoId: "kolkata" },
-  { name: "AllenHouse Public School, Rooma ", state: "Uttar Pradesh", icon: "🌆", date: "20th December 2025", color: "bg-orange-600", mapUrl: "https://www.google.com/maps/search/?api=1&query=Allen+House+Rooma+School+Kanpur" },
+  { name: "AllenHouse Public School, Rooma ", state: "Uttar Pradesh", icon: "🌆", date: "20th December 2025", color: "bg-orange-600", mapUrl: "https://www.google.com/maps/search/?api=1&query=Allen+House+Rooma+School+Kanpur", video: "/video/kanpur.mp4", videoId: "kanpur" },
   { name: "⁠Meena Bhujbal School of Excellence, Nashik", state: "Maharashtra", icon: "🏘️", date: "11th January 2026", color: "bg-red-600", mapUrl: "https://maps.app.goo.gl/ggRb49bA8K4UDZHZ8", video: "/video/wscnashik.mp4", videoId: "nashik" },
 ]
 
