@@ -4,6 +4,7 @@ import { Suspense, useEffect, useMemo, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs"
+import { REGISTRATION_OPEN, REGISTRATION_CLOSED_MESSAGE } from "@/lib/registrationConfig"
 
 const AGE_CATEGORIES = [
   { value: "Primary", label: "Primary (Class 3 to 5)", classes: ["3", "4", "5"] },
@@ -130,6 +131,22 @@ function RegisterFormContent() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
       <div className="max-w-4xl mx-auto px-4 py-10">
+        {!REGISTRATION_OPEN ? (
+          <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-200 text-center">
+            <div className="text-5xl mb-4">⏳</div>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">{REGISTRATION_CLOSED_MESSAGE}</h1>
+            <p className="text-gray-600 mb-6">
+              Registration is not open yet. Please check back soon to register for your chosen category.
+            </p>
+            <Link
+              href="/register"
+              className="inline-block bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg font-semibold py-3 px-6 transition-all"
+            >
+              Back to Register
+            </Link>
+          </div>
+        ) : (
+          <>
         <SignedOut>
           <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-200 text-center">
             <h1 className="text-2xl font-bold text-gray-900 mb-3">Sign in to Register</h1>
@@ -388,6 +405,8 @@ function RegisterFormContent() {
             </form>
           </div>
         </SignedIn>
+          </>
+        )}
       </div>
     </div>
   )

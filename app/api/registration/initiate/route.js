@@ -6,6 +6,7 @@ import CategoryRegistration from "@/lib/categoryRegistrationModel"
 import User from "@/lib/userModel"
 import { getBasePriceInPaise } from "@/lib/pricing"
 import { validateAndPriceWithCoupon } from "@/lib/coupon"
+import { REGISTRATION_OPEN, REGISTRATION_CLOSED_MESSAGE } from "@/lib/registrationConfig"
 
 export const runtime = "nodejs"
 export const preferredRegion = ["bom1"]
@@ -46,6 +47,10 @@ function getOrigin(request) {
 
 export async function POST(request) {
   try {
+    if (!REGISTRATION_OPEN) {
+      return NextResponse.json({ error: REGISTRATION_CLOSED_MESSAGE }, { status: 403 })
+    }
+
     const { userId } = await auth()
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })

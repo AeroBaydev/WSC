@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from "react"
 import StatsCounter from "./StatsCounter"
 import RegionalLocations from "./RegionalLocations"
 import ChiefGuestJudgesCarousel from "./ChiefGuestJudgesCarousel"
+import { REGISTRATION_OPEN, REGISTRATION_CLOSED_MESSAGE } from "@/lib/registrationConfig"
 
 async function attemptPlay(video, { unmuted }) {
   if (!video) return { ok: false }
@@ -246,7 +247,7 @@ export default function Hero() {
                   whileTap={{ scale: 0.95 }}
                   className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg"
                 >
-                  Register Now
+                  {REGISTRATION_OPEN ? "Register Now" : REGISTRATION_CLOSED_MESSAGE}
                 </motion.a>
                 <motion.a
                   href="/experiencex"

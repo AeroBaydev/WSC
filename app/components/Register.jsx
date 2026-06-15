@@ -3,6 +3,7 @@ import { motion } from "framer-motion"
 import { useState, useEffect, useMemo } from "react"
 import { useUser, SignedIn, SignedOut, SignInButton } from "@clerk/nextjs"
 import Link from "next/link"
+import { REGISTRATION_OPEN, REGISTRATION_CLOSED_MESSAGE } from "@/lib/registrationConfig"
 
 export default function Register() {
   const { user } = useUser()
@@ -380,6 +381,92 @@ export default function Register() {
 
   const isRegisteredInCategory = (categoryTitle) => {
     return getCategoryStatus(categoryTitle) === "registered"
+  }
+
+  if (!REGISTRATION_OPEN) {
+    return (
+      <section id="register" className="py-20 bg-top md:bg-cover bg-contain bg-no-repeat bg-fixed relative" style={{backgroundImage: 'url(/images/rgbg.jpg)'}}>
+        <div className="absolute inset-0 bg-white/85"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center max-w-4xl mx-auto mb-16"
+          >
+            <div className="text-6xl md:text-8xl mb-6">⏳</div>
+            <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+              {REGISTRATION_CLOSED_MESSAGE}
+            </h2>
+            <p className="text-xl md:text-2xl text-gray-600 leading-relaxed">
+              We&apos;re preparing for an exciting season of competitions. Check back soon to register for
+              ExperienceX and SoarFest categories.
+            </p>
+          </motion.div>
+
+          <div className="flex justify-center mb-8">
+            <div className="bg-gray-100 rounded-lg p-1 inline-flex">
+              <button
+                onClick={() => setSelectedEventType("WSC")}
+                className={`px-6 py-3 rounded-md font-semibold transition-all ${
+                  selectedEventType === "WSC"
+                    ? "bg-white text-orange-600 shadow-sm"
+                    : "text-gray-600 hover:text-gray-900"
+                }`}
+              >
+                ExperienceX
+              </button>
+              <button
+                onClick={() => setSelectedEventType("SoarFest")}
+                className={`px-6 py-3 rounded-md font-semibold transition-all ${
+                  selectedEventType === "SoarFest"
+                    ? "bg-white text-blue-600 shadow-sm"
+                    : "text-gray-600 hover:text-gray-900"
+                }`}
+              >
+                SoarFest 2025
+              </button>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {pricingTiers
+              .filter((tier) => tier.eventType === selectedEventType)
+              .map((tier, index) => (
+                <motion.div
+                  key={tier.title}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className={`relative bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 ${
+                    tier.popular ? "ring-2 ring-orange-500" : ""
+                  }`}
+                >
+                  {tier.popular && (
+                    <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-center py-2 text-sm font-semibold">
+                      Most Popular
+                    </div>
+                  )}
+                  <div className={`h-2 bg-gradient-to-r ${tier.color}`}></div>
+                  <div className="p-6">
+                    <h3 className="text-lg font-bold text-gray-900 mb-1">{tier.title}</h3>
+                    <p className="text-sm text-orange-500 mb-4">{tier.subtitle}</p>
+                    <div className="mb-4">
+                      <span className="text-2xl md:text-3xl font-bold text-gray-900">{tier.price}</span>
+                    </div>
+                    <p className="text-gray-600 mb-4 text-sm">{tier.description}</p>
+                    <div className="block w-full py-3 px-4 rounded-lg font-semibold text-gray-600 bg-gray-100 border border-gray-200 text-sm text-center cursor-not-allowed">
+                      Opening Soon
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+          </div>
+        </div>
+      </section>
+    )
   }
 
   return (
