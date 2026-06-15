@@ -1,9 +1,10 @@
 // middleware.ts
 import { clerkMiddleware } from "@clerk/nextjs/server";
 
+// Auth is enforced per-route via auth() in API handlers and Clerk components on pages.
+// Do not rely on this middleware alone for route protection.
 export default clerkMiddleware();
 
-// Protect all routes by default
 export const config = {
-  matcher: ["/((?!.*\\..*|_next).*)", "/"], // Matches all routes except static files
+  matcher: ["/((?!.*\\..*|_next).*)", "/"],
 };

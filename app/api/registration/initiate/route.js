@@ -7,6 +7,7 @@ import User from "@/lib/userModel"
 import { getBasePriceInPaise } from "@/lib/pricing"
 import { validateAndPriceWithCoupon } from "@/lib/coupon"
 import { REGISTRATION_OPEN, REGISTRATION_CLOSED_MESSAGE } from "@/lib/registrationConfig"
+import { checkRateLimit, getClientIp } from "@/lib/rateLimit"
 
 export const runtime = "nodejs"
 export const preferredRegion = ["bom1"]
@@ -49,6 +50,14 @@ export async function POST(request) {
   try {
     if (!REGISTRATION_OPEN) {
       return NextResponse.json({ error: REGISTRATION_CLOSED_MESSAGE }, { status: 403 })
+    }
+
+    const rate = await checkRateLimit(`registration-initiate:${getClientIp(request)}`, {
+      limit: 10,
+      windowSec: 60,
+    })
+    if (!rate.success) {
+      return NextResponse.json({ error: "Too many requests. Please try again later." }, { status: 429 })
     }
 
     const { userId } = await auth()

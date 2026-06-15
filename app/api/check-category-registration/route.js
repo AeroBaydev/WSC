@@ -22,12 +22,9 @@ export async function GET(request) {
       clerkUserId: userId 
     }).select('category paymentStatus registeredAt');
 
-    console.log('Found registrations for user:', userId, registrations);
-
     return NextResponse.json({ 
       success: true, 
       registrations: registrations || [],
-      userId: userId
     });
 
   } catch (error) {

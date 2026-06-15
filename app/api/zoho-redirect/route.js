@@ -1,16 +1,23 @@
 import { NextResponse } from 'next/server';
+import dbConnect from '@/lib/dbConnect.js';
 import { getBasePriceInPaise } from '@/lib/pricing.js';
 import { validateAndPriceWithCoupon } from '@/lib/coupon.js';
+import { checkRateLimit, getClientIp } from '@/lib/rateLimit.js';
 
 export const runtime = 'nodejs';
 export const preferredRegion = ['bom1'];
 export const dynamic = 'force-dynamic';
 
-// This endpoint is the Redirect URL target from Zoho Form.
-// Expecting query params: clerkUserId, category, email, coupon (optional)
-
 export async function GET(request) {
   try {
+    const rate = await checkRateLimit(`zoho-redirect:${getClientIp(request)}`, {
+      limit: 5,
+      windowSec: 60,
+    });
+    if (!rate.success) {
+      return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 });
+    }
+
     const { searchParams } = new URL(request.url);
     const clerkUserId = searchParams.get('clerkUserId');
     const category = searchParams.get('category');
@@ -21,32 +28,23 @@ export async function GET(request) {
       return NextResponse.json({ error: 'Missing required params' }, { status: 400 });
     }
 
-    // No DB writes here. Only generate a payment link and redirect.
+    await dbConnect();
 
     let basePricePaise;
     try {
       basePricePaise = getBasePriceInPaise(category);
-    } catch (e) {
-      return NextResponse.json({
-        error: 'Unknown category',
-        category,
-        hint: 'Map your Zoho category to one of the configured keys (e.g., CAT_01..CAT_14) or update lib/pricing.js to include your label.',
-      }, { status: 400 });
+    } catch {
+      return NextResponse.json({ error: 'Unknown category' }, { status: 400 });
     }
-    const { finalPricePaise, applied } = await validateAndPriceWithCoupon({
+
+    const { finalPricePaise } = await validateAndPriceWithCoupon({
       category,
       basePricePaise,
       couponCode: coupon,
     });
 
-    // Always create a fresh payment link to avoid stale references
-
-    // Do not write any registration records here; webhook will persist only on success
-
-    // Create Razorpay Payment Link via REST API
     const keyId = process.env.RAZORPAY_KEY_ID;
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
-    // Force correct baseUrl regardless of environment variable
     const baseUrl = 'https://api.razorpay.com/v1';
 
     if (!keyId || !keySecret) {
@@ -54,11 +52,6 @@ export async function GET(request) {
     }
 
     const authHeader = 'Basic ' + Buffer.from(`${keyId}:${keySecret}`).toString('base64');
-    
-    // Debug: Log the constructed URL
-    console.log('Constructed Razorpay URL:', `${baseUrl}/payment_links`);
-
-    // Build success URL with context so UI page can confirm and show success
     const successUrl = `https://worldskillchallenge.com/registration-success?clerkUserId=${encodeURIComponent(clerkUserId)}&category=${encodeURIComponent(category)}`;
 
     const payload = {
@@ -83,53 +76,30 @@ export async function GET(request) {
       callback_method: 'get',
     };
 
-    // Construct the full URL
-    const paymentUrl = `${baseUrl}/payment_links`;
-    console.log('Making request to:', paymentUrl);
-    
-    const resp = await fetch(paymentUrl, {
+    const resp = await fetch(`${baseUrl}/payment_links`, {
       method: 'POST',
       headers: {
-        'Authorization': authHeader,
+        Authorization: authHeader,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
-      // With Vercel Pro, allow more time to handle upstream latency
-      signal: AbortSignal.timeout(30000), // 30 second timeout
+      signal: AbortSignal.timeout(30000),
     });
 
     if (!resp.ok) {
-      const errText = await resp.text();
-      console.error('Razorpay payment link error:', errText);
+      console.error('[zoho-redirect] Razorpay payment link error');
       return NextResponse.json({ error: 'Failed to create payment link' }, { status: 502 });
     }
 
     const data = await resp.json();
-    // Redirect to Razorpay short_url (auto-lands in UPI flow on device)
     return NextResponse.redirect(data.short_url);
   } catch (err) {
-    console.error('zoho-redirect error:', err);
-    
-    // Handle specific error types
+    console.error('[zoho-redirect] error:', err?.message || err);
+
     if (err.name === 'AbortError') {
-      return NextResponse.json({ 
-        error: 'Payment service timeout - please try again',
-        hint: 'This may be due to Vercel free tier limitations'
-      }, { status: 504 });
+      return NextResponse.json({ error: 'Payment service timeout - please try again' }, { status: 504 });
     }
-    
-    if (err.message.includes('fetch')) {
-      return NextResponse.json({ 
-        error: 'Network error connecting to payment service',
-        hint: 'Please check your internet connection and try again'
-      }, { status: 502 });
-    }
-    
-    return NextResponse.json({ 
-      error: 'Internal server error',
-      details: err.message 
-    }, { status: 500 });
+
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
-
-

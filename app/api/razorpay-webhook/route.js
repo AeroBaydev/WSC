@@ -3,11 +3,55 @@ import crypto from 'node:crypto';
 import dbConnect from '@/lib/dbConnect.js';
 import CategoryRegistration from '@/lib/categoryRegistrationModel.js';
 import { syncRegistrationToZohoSheet } from '@/lib/zohoSheetSync.js';
+import { secureCompare } from '@/lib/secureCompare.js';
+import { confirmCouponRedemption } from '@/lib/couponRedemption.js';
 
 export const runtime = 'nodejs';
 export const preferredRegion = ['bom1'];
 
-// Razorpay sends events to this webhook. Configure the secret in dashboard.
+function getPaidAmountPaise(paymentLinkEntity, paymentEntity) {
+  const raw =
+    paymentLinkEntity?.amount_paid ??
+    paymentLinkEntity?.amount ??
+    paymentEntity?.amount;
+  const n = Number(raw);
+  return Number.isFinite(n) ? n : null;
+}
+
+async function markSuccess(registration, { paymentId, paymentLinkId, notes, paidAmountPaise }) {
+  if (
+    typeof registration.finalPricePaise === 'number' &&
+    paidAmountPaise !== null &&
+    paidAmountPaise !== registration.finalPricePaise
+  ) {
+    console.error('[razorpay-webhook] Amount mismatch:', {
+      paymentLinkId,
+      expected: registration.finalPricePaise,
+      received: paidAmountPaise,
+    });
+    registration.paymentStatus = 'amount_mismatch';
+    registration.zohoSheetLastError = `Expected ${registration.finalPricePaise}, received ${paidAmountPaise}`;
+    await registration.save();
+    return { ok: false, reason: 'amount_mismatch' };
+  }
+
+  registration.paymentStatus = 'success';
+  registration.paymentOrderId = paymentId || registration.paymentOrderId;
+  registration.paymentLinkId = paymentLinkId || registration.paymentLinkId;
+  registration.transactionId = paymentId || registration.transactionId;
+  if (notes?.paymentAmount && !registration.paymentAmount) {
+    registration.paymentAmount = String(notes.paymentAmount);
+  }
+  registration.registeredAt = registration.registeredAt || new Date();
+  await registration.save();
+
+  if (registration.discountApplied && registration.couponCode) {
+    await confirmCouponRedemption(registration.couponCode, registration._id);
+  }
+
+  return { ok: true };
+}
+
 export async function POST(request) {
   try {
     const body = await request.text();
@@ -18,13 +62,12 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Webhook secret not configured' }, { status: 500 });
     }
 
-    // Verify signature
     const expected = crypto
       .createHmac('sha256', secret)
       .update(body)
       .digest('hex');
 
-    if (expected !== signature) {
+    if (!signature || !secureCompare(expected, signature)) {
       return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
     }
 
@@ -33,34 +76,33 @@ export async function POST(request) {
     await dbConnect();
 
     const event = payload.event;
-    // Razorpay: payload can be payload.payload (nested) or payload directly
     const inner = payload.payload || payload;
     const paymentLinkEntity = inner?.payment_link?.entity || inner?.payment_link;
     const paymentEntity = inner?.payment?.entity || inner?.payment;
 
-    // For payment_link.paid: notes are on payment_link entity
-    // For payment.captured: notes may be on payment entity
     const notes = paymentLinkEntity?.notes || paymentEntity?.notes || {};
     const paymentId = paymentEntity?.id;
     const paymentLinkId = paymentLinkEntity?.id || paymentEntity?.payment_link_id;
+    const paidAmountPaise = getPaidAmountPaise(paymentLinkEntity, paymentEntity);
 
-    const isSuccessEvent = (event === 'payment.captured' || event === 'payment_link.paid');
-    const isFailureEvent = (event === 'payment.failed' || event === 'payment_link.cancelled');
+    const isSuccessEvent = event === 'payment.captured' || event === 'payment_link.paid';
+    const isFailureEvent = event === 'payment.failed' || event === 'payment_link.cancelled';
 
     const clerkUserId = notes.clerkUserId;
     const category = notes.category;
 
     if (!clerkUserId || !category) {
-      // Fallback: find by paymentLinkId and update (notes missing e.g. from payment entity)
       if (paymentLinkId) {
         const reg = await CategoryRegistration.findOne({ paymentLinkId });
         if (reg) {
-          reg.paymentStatus = isSuccessEvent ? 'success' : (isFailureEvent ? 'failed' : reg.paymentStatus);
-          reg.transactionId = paymentId || reg.transactionId;
-          reg.paymentOrderId = paymentId || reg.paymentOrderId;
-          await reg.save();
-          // Only sync sheet on final payment_link.paid event
-          if (isSuccessEvent && !reg.zohoSheetSyncedAt && event === 'payment_link.paid') {
+          if (isSuccessEvent) {
+            await markSuccess(reg, { paymentId, paymentLinkId, notes, paidAmountPaise });
+          } else if (isFailureEvent) {
+            reg.paymentStatus = 'failed';
+            reg.paymentOrderId = paymentId || reg.paymentOrderId;
+            await reg.save();
+          }
+          if (isSuccessEvent && reg.paymentStatus === 'success' && !reg.zohoSheetSyncedAt && event === 'payment_link.paid') {
             try {
               const syncRes = await syncRegistrationToZohoSheet(reg);
               if (syncRes?.ok) {
@@ -75,20 +117,16 @@ export async function POST(request) {
       return NextResponse.json({ ok: true });
     }
 
-    // Only persist data for successful payments
     if (isSuccessEvent) {
-      // Prefer resolving by paymentLinkId (most reliable)
       let registration = null;
       if (paymentLinkId) {
         registration = await CategoryRegistration.findOne({ paymentLinkId });
       }
 
-      // Fall back to clerkUserId + category from notes
       if (!registration && clerkUserId && category) {
         registration = await CategoryRegistration.findOne({ clerkUserId, category });
       }
 
-      // Final fallback: latest initiated/pending record for this user
       if (!registration && clerkUserId) {
         registration = await CategoryRegistration.findOne({
           clerkUserId,
@@ -96,11 +134,7 @@ export async function POST(request) {
         }).sort({ createdAt: -1 });
       }
 
-      const hasFormData = registration ? !!(registration.formData && Object.keys(registration.formData || {}).length > 0) : false;
-      console.log('[razorpay-webhook]', event, 'paymentLinkId:', paymentLinkId, 'found:', !!registration, 'hasFormData:', hasFormData);
-
       if (!registration) {
-        // Create a new record on success if none exists (no formData - we only have notes)
         registration = await CategoryRegistration.create({
           clerkUserId: clerkUserId || 'unknown',
           category: category || 'unknown',
@@ -113,30 +147,25 @@ export async function POST(request) {
           registeredAt: new Date(),
         });
       } else {
-        registration.paymentStatus = 'success';
-        registration.paymentOrderId = paymentId || registration.paymentOrderId;
-        registration.paymentLinkId = paymentLinkId || registration.paymentLinkId;
-        // Store definitive payment identifiers on success
-        registration.transactionId = paymentId || registration.transactionId;
-        if (notes?.paymentAmount && !registration.paymentAmount) {
-          registration.paymentAmount = String(notes.paymentAmount);
+        const result = await markSuccess(registration, {
+          paymentId,
+          paymentLinkId,
+          notes,
+          paidAmountPaise,
+        });
+        if (!result.ok) {
+          return NextResponse.json({ ok: true });
         }
-        registration.registeredAt = registration.registeredAt || new Date();
-        await registration.save();
       }
 
-      // Sync to Zoho Sheet once (best effort), only on final payment_link.paid event
       try {
-        if (!registration.zohoSheetSyncedAt && event === 'payment_link.paid') {
+        if (registration.paymentStatus === 'success' && !registration.zohoSheetSyncedAt && event === 'payment_link.paid') {
           const syncRes = await syncRegistrationToZohoSheet(registration);
-          console.log('[razorpay-webhook] Zoho sync:', syncRes?.ok ? 'ok' : syncRes?.skipped ? 'skipped' : syncRes?.error);
           if (syncRes?.ok) {
             registration.zohoSheetSyncedAt = new Date();
             registration.zohoSheetLastError = undefined;
             await registration.save();
-          } else if (syncRes?.skipped) {
-            // do not mark error if integration not configured
-          } else {
+          } else if (!syncRes?.skipped) {
             registration.zohoSheetLastError = String(syncRes?.error || 'Zoho sheet sync failed');
             await registration.save();
           }
@@ -145,12 +174,9 @@ export async function POST(request) {
         try {
           registration.zohoSheetLastError = String(e?.message || e);
           await registration.save();
-        } catch (_) {
-          // ignore
-        }
+        } catch (_) {}
       }
     } else if (isFailureEvent && paymentLinkId) {
-      // Optional: mark existing initiated/pending record as failed; do NOT create new
       const reg = await CategoryRegistration.findOne({ paymentLinkId });
       if (reg) {
         reg.paymentStatus = 'failed';
@@ -161,9 +187,7 @@ export async function POST(request) {
 
     return NextResponse.json({ ok: true });
   } catch (err) {
-    console.error('razorpay-webhook error:', err);
+    console.error('[razorpay-webhook] error:', err?.message || err);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
-
-

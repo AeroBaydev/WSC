@@ -1,81 +1,55 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect.js';
 import CategoryRegistration from '@/lib/categoryRegistrationModel.js';
+import { secureCompare } from '@/lib/secureCompare.js';
 
 export async function POST(request) {
   try {
-    // 1. Get the webhook secret from header
     const webhookSecret = request.headers.get('x-zoho-webhook-secret');
     const body = await request.text();
 
-    console.log('Webhook headers:', Object.fromEntries(request.headers.entries()));
-    console.log('Webhook raw body:', body);
-
-    // 2. Check if webhook secret matches
     if (!webhookSecret || !process.env.ZOHO_WEBHOOK_SECRET) {
-      console.error('Missing webhook secret header or environment variable');
+      console.error('[zoho-success] Missing webhook secret configuration');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    if (webhookSecret !== process.env.ZOHO_WEBHOOK_SECRET) {
-      console.error('Webhook secret mismatch');
+    if (!secureCompare(webhookSecret, process.env.ZOHO_WEBHOOK_SECRET)) {
+      console.error('[zoho-success] Invalid webhook secret');
       return NextResponse.json({ error: 'Invalid webhook secret' }, { status: 401 });
     }
 
-    // 3. Parse JSON payload
     let payload;
     try {
       payload = JSON.parse(body);
-    } catch (e) {
-      console.error('Failed to parse JSON:', e);
+    } catch {
       return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
     }
 
-    console.log('Parsed payload:', payload);
-
-    // 4. Extract Zoho fields directly (do NOT treat any Zoho field as payment fields)
     const email = payload.Field_6;
     const clerkUserId = payload.Field_7;
     const category = payload.Field_8;
-    const couponFromForm = payload.Field_9; // typically coupon code in our form
-    const ageGroupOrOther = payload.Field_10; // do NOT map to payment status
+    const couponFromForm = payload.Field_9;
     const transactionId = payload.transaction_id || `webhook_${Date.now()}`;
 
-    console.log('Extracted data:', {
-      email,
-      clerkUserId,
-      category,
-      couponFromForm,
-      ageGroupOrOther,
-      transactionId,
-    });
-
     if (!email || !clerkUserId || !category) {
-      console.error('Missing required fields:', { email, clerkUserId, category });
+      console.error('[zoho-success] Missing required fields');
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // 5. Connect to MongoDB
     await dbConnect();
 
-    // 6. Check if user is already registered in this category
     const existingRegistration = await CategoryRegistration.findOne({
       clerkUserId,
       category,
     });
 
     if (existingRegistration) {
-      console.log('Zoho webhook: existing registration found, updating metadata only');
-      // Update email or metadata only; never touch paymentStatus/paymentAmount here
       existingRegistration.email = email || existingRegistration.email;
-      existingRegistration.zohoFormData = payload;
-      // Optionally store coupon seen in Zoho
-      if (couponFromForm) {
-        existingRegistration.zohoFormData = {
-          ...(existingRegistration.zohoFormData || {}),
-          coupon: couponFromForm,
-        };
-      }
+      existingRegistration.zohoFormData = {
+        category,
+        coupon: couponFromForm || undefined,
+        transactionId,
+      };
       await existingRegistration.save();
       return NextResponse.json({
         success: true,
@@ -86,21 +60,22 @@ export async function POST(request) {
       });
     }
 
-    // 7. Create new category registration (metadata only). Payment handled via Razorpay webhook.
     const newRegistration = await CategoryRegistration.create({
       clerkUserId,
       email,
       category,
       paymentStatus: 'pending',
       transactionId,
-      zohoFormData: payload, // Store raw Zoho data
+      zohoFormData: {
+        category,
+        coupon: couponFromForm || undefined,
+        transactionId,
+      },
     });
 
-    console.log('Successfully registered user:', {
-      clerkUserId,
+    console.log('[zoho-success] Created pending registration:', {
       category,
-      paymentStatus: newRegistration.paymentStatus,
-      registrationId: newRegistration._id,
+      registrationId: String(newRegistration._id),
     });
 
     return NextResponse.json({
@@ -111,7 +86,7 @@ export async function POST(request) {
       registrationId: newRegistration._id,
     });
   } catch (error) {
-    console.error('Webhook error:', error);
+    console.error('[zoho-success] Webhook error:', error?.message || error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

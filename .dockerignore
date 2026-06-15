@@ -1,0 +1,13 @@
+# Ye files Docker image me NAHI jaani chahiye — fast build + security ke liye
+
+node_modules
+.next
+.git
+.gitignore
+.env*
+npm-debug.log*
+README.md
+*.md
+.DS_Store
+.vscode
+.vercel
