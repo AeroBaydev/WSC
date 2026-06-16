@@ -8,6 +8,11 @@ import { getBasePriceInPaise } from "@/lib/pricing"
 import { validateAndPriceWithCoupon } from "@/lib/coupon"
 import { REGISTRATION_OPEN, REGISTRATION_CLOSED_MESSAGE } from "@/lib/registrationConfig"
 import { checkRateLimit, getClientIp } from "@/lib/rateLimit"
+import {
+  assertCanRegister,
+  applySeasonFieldsToRegistration,
+  buildRegistrationCreatePayload,
+} from "@/lib/registrationService"
 
 export const runtime = "nodejs"
 export const preferredRegion = ["bom1"]
@@ -77,7 +82,6 @@ export async function POST(request) {
 
     const { category, couponCode, formData } = parsed.data
 
-    // Extra guard: members must match team size
     const trimmedMembers = (formData.members || []).slice(0, formData.teamSize).map((m) => m.trim())
     if (trimmedMembers.length !== formData.teamSize || trimmedMembers.some((m) => !m)) {
       return NextResponse.json({ error: "Please enter all team member names." }, { status: 400 })
@@ -88,7 +92,6 @@ export async function POST(request) {
       return NextResponse.json({ error: "Selected class is not valid for the chosen age category." }, { status: 400 })
     }
 
-    // Price & coupon
     const basePricePaise = getBasePriceInPaise(category)
     const couponResult = await validateAndPriceWithCoupon({
       category,
@@ -100,7 +103,6 @@ export async function POST(request) {
     const applied = couponResult.applied
     const discountReason = couponResult.reason
 
-    // Upsert "initiated" registration so we can attach paymentLinkId
     await dbConnect()
 
     const userProfile = await User.findOne({ userId }).select("email schoolName")
@@ -111,23 +113,35 @@ export async function POST(request) {
       )
     }
 
-    const existing = await CategoryRegistration.findOne({ clerkUserId: userId, category })
-    if (existing && existing.paymentStatus === "success") {
-      return NextResponse.json({ error: "Already registered in this category." }, { status: 409 })
+    let eligibility
+    try {
+      eligibility = await assertCanRegister({ clerkUserId: userId, category })
+    } catch (err) {
+      if (
+        err.code === "NO_ACTIVE_SEASON" ||
+        err.code === "REGISTRATION_NOT_OPEN_YET" ||
+        err.code === "REGISTRATION_CLOSED"
+      ) {
+        return NextResponse.json({ error: err.message || REGISTRATION_CLOSED_MESSAGE }, { status: 403 })
+      }
+      throw err
     }
 
+    if (!eligibility.allowed) {
+      return NextResponse.json({ error: eligibility.message }, { status: 409 })
+    }
+
+    const { season, existing } = eligibility
     const emailFromClerk = clerkUser?.primaryEmailAddress?.emailAddress
     const email = existing?.email || userProfile?.email || emailFromClerk || "unknown@example.com"
 
     const registration =
       existing ||
-      (await CategoryRegistration.create({
-        clerkUserId: userId,
-        email,
-        category,
-        paymentStatus: "initiated",
-      }))
+      (await CategoryRegistration.create(
+        buildRegistrationCreatePayload({ clerkUserId: userId, email, category, season })
+      ))
 
+    applySeasonFieldsToRegistration(registration, season)
     registration.paymentStatus = "initiated"
     registration.couponCode = couponCode ? String(couponCode).trim().toUpperCase() : ""
     registration.basePricePaise = basePricePaise
@@ -139,7 +153,6 @@ export async function POST(request) {
       members: trimmedMembers,
     }
 
-    // Create Razorpay Payment Link via REST API
     const keyId = process.env.RAZORPAY_KEY_ID
     const keySecret = process.env.RAZORPAY_KEY_SECRET
     const baseUrl = "https://api.razorpay.com/v1"
@@ -159,7 +172,7 @@ export async function POST(request) {
       amount: finalPricePaise,
       currency: "INR",
       accept_partial: false,
-      description: `Registration for ${category}`,
+      description: `Registration for ${category} (${season.name})`,
       customer: {
         name: email,
         email,
@@ -169,6 +182,9 @@ export async function POST(request) {
       notes: {
         clerkUserId: userId,
         category,
+        seasonId: String(season._id),
+        seasonYear: String(season.year),
+        seasonSlug: season.slug,
         email,
         coupon: registration.couponCode || "",
         paymentAmount: String(finalPricePaise),
@@ -204,6 +220,11 @@ export async function POST(request) {
       ok: true,
       registrationId: String(registration._id),
       paymentUrl: data?.short_url,
+      season: {
+        year: season.year,
+        name: season.name,
+        slug: season.slug,
+      },
       pricing: {
         basePricePaise,
         finalPricePaise,
@@ -213,10 +234,15 @@ export async function POST(request) {
     })
   } catch (err) {
     console.error("registration/initiate error:", err)
+    if (err?.code === 11000) {
+      return NextResponse.json(
+        { error: "Already registered in this category for the current season." },
+        { status: 409 }
+      )
+    }
     if (err?.name === "AbortError") {
       return NextResponse.json({ error: "Payment service timeout - please try again" }, { status: 504 })
     }
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
-

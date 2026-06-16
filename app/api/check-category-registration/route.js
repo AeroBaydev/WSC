@@ -1,34 +1,46 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
-import dbConnect from '@/lib/dbConnect.js';
-import CategoryRegistration from '@/lib/categoryRegistrationModel.js';
+import { NextResponse } from "next/server"
+import { auth } from "@clerk/nextjs/server"
+import dbConnect from "@/lib/dbConnect.js"
+import {
+  getCurrentSeasonRegistrations,
+  getRegistrationHistory,
+} from "@/lib/registrationService.js"
+import { formatSeasonSummary, getActiveSeasonOptional } from "@/lib/seasonService.js"
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic"
 
 export async function GET(request) {
   try {
-    // Get authenticated user
-    const { userId } = await auth();
-    
+    const { userId } = await auth()
+
     if (!userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    // Connect to MongoDB
-    await dbConnect();
+    await dbConnect()
 
-    // Find all category registrations for this user
-    const registrations = await CategoryRegistration.find({ 
-      clerkUserId: userId 
-    }).select('category paymentStatus registeredAt');
+    const { searchParams } = new URL(request.url)
+    const scope = searchParams.get("scope")
 
-    return NextResponse.json({ 
-      success: true, 
+    if (scope === "all") {
+      const history = await getRegistrationHistory(userId)
+      const activeSeason = await getActiveSeasonOptional()
+      return NextResponse.json({
+        success: true,
+        activeSeason: formatSeasonSummary(activeSeason),
+        registrations: history,
+      })
+    }
+
+    const { season, registrations } = await getCurrentSeasonRegistrations(userId)
+
+    return NextResponse.json({
+      success: true,
+      activeSeason: formatSeasonSummary(season),
       registrations: registrations || [],
-    });
-
+    })
   } catch (error) {
-    console.error('Check category registration error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error("Check category registration error:", error)
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }

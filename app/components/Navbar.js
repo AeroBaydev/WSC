@@ -102,6 +102,17 @@ export default function Navbar() {
               </Link>
             ))}
 
+            {isSignedIn && (
+              <Link
+                href="/profile"
+                className={`text-gray-700 hover:text-orange-500 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  pathname === "/profile" ? "text-orange-500 font-semibold" : ""
+                }`}
+              >
+                My Registrations
+              </Link>
+            )}
+
             <div className="relative">
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -231,6 +242,18 @@ export default function Navbar() {
                 {item.label}
               </Link>
             ))}
+
+            {isSignedIn && (
+              <Link
+                href="/profile"
+                onClick={() => setIsOpen(false)}
+                className={`block w-full text-left text-gray-700 hover:text-orange-500 py-2 text-base font-medium ${
+                  pathname === "/profile" ? "text-orange-500 font-semibold" : ""
+                }`}
+              >
+                My Registrations
+              </Link>
+            )}
 
             <div className="border-t border-gray-200 mt-3 pt-3">
               <div className="text-sm font-medium text-gray-900 mb-2">More</div>

@@ -1,10 +1,13 @@
 import { NextResponse } from 'next/server';
 import crypto from 'node:crypto';
+import mongoose from 'mongoose';
 import dbConnect from '@/lib/dbConnect.js';
 import CategoryRegistration from '@/lib/categoryRegistrationModel.js';
 import { syncRegistrationToZohoSheet } from '@/lib/zohoSheetSync.js';
 import { secureCompare } from '@/lib/secureCompare.js';
 import { confirmCouponRedemption } from '@/lib/couponRedemption.js';
+import { getActiveSeasonOptional } from '@/lib/seasonService.js';
+import { buildRegistrationCreatePayload } from '@/lib/registrationService.js';
 
 export const runtime = 'nodejs';
 export const preferredRegion = ['bom1'];
@@ -16,6 +19,49 @@ function getPaidAmountPaise(paymentLinkEntity, paymentEntity) {
     paymentEntity?.amount;
   const n = Number(raw);
   return Number.isFinite(n) ? n : null;
+}
+
+function resolveSeasonIdFromNotes(notes) {
+  const raw = notes?.seasonId;
+  if (!raw || !mongoose.Types.ObjectId.isValid(String(raw))) return null;
+  return new mongoose.Types.ObjectId(String(raw));
+}
+
+async function findRegistrationForWebhook({ paymentLinkId, clerkUserId, category, seasonId }) {
+  if (paymentLinkId) {
+    const byLink = await CategoryRegistration.findOne({ paymentLinkId });
+    if (byLink) return byLink;
+  }
+
+  if (clerkUserId && category && seasonId) {
+    const bySeason = await CategoryRegistration.findOne({
+      clerkUserId,
+      seasonId,
+      category,
+    });
+    if (bySeason) return bySeason;
+  }
+
+  if (clerkUserId && category) {
+    const activeSeason = await getActiveSeasonOptional();
+    if (activeSeason) {
+      const byActiveSeason = await CategoryRegistration.findOne({
+        clerkUserId,
+        seasonId: activeSeason._id,
+        category,
+      });
+      if (byActiveSeason) return byActiveSeason;
+    }
+  }
+
+  if (clerkUserId) {
+    return CategoryRegistration.findOne({
+      clerkUserId,
+      paymentStatus: { $in: ['pending', 'initiated'] },
+    }).sort({ createdAt: -1 });
+  }
+
+  return null;
 }
 
 async function markSuccess(registration, { paymentId, paymentLinkId, notes, paidAmountPaise }) {
@@ -50,6 +96,29 @@ async function markSuccess(registration, { paymentId, paymentLinkId, notes, paid
   }
 
   return { ok: true };
+}
+
+async function syncZohoIfNeeded(registration, event) {
+  if (registration.paymentStatus !== 'success' || registration.zohoSheetSyncedAt || event !== 'payment_link.paid') {
+    return;
+  }
+
+  try {
+    const syncRes = await syncRegistrationToZohoSheet(registration);
+    if (syncRes?.ok) {
+      registration.zohoSheetSyncedAt = new Date();
+      registration.zohoSheetLastError = undefined;
+      await registration.save();
+    } else if (!syncRes?.skipped) {
+      registration.zohoSheetLastError = String(syncRes?.error || 'Zoho sheet sync failed');
+      await registration.save();
+    }
+  } catch (e) {
+    try {
+      registration.zohoSheetLastError = String(e?.message || e);
+      await registration.save();
+    } catch (_) {}
+  }
 }
 
 export async function POST(request) {
@@ -90,91 +159,46 @@ export async function POST(request) {
 
     const clerkUserId = notes.clerkUserId;
     const category = notes.category;
-
-    if (!clerkUserId || !category) {
-      if (paymentLinkId) {
-        const reg = await CategoryRegistration.findOne({ paymentLinkId });
-        if (reg) {
-          if (isSuccessEvent) {
-            await markSuccess(reg, { paymentId, paymentLinkId, notes, paidAmountPaise });
-          } else if (isFailureEvent) {
-            reg.paymentStatus = 'failed';
-            reg.paymentOrderId = paymentId || reg.paymentOrderId;
-            await reg.save();
-          }
-          if (isSuccessEvent && reg.paymentStatus === 'success' && !reg.zohoSheetSyncedAt && event === 'payment_link.paid') {
-            try {
-              const syncRes = await syncRegistrationToZohoSheet(reg);
-              if (syncRes?.ok) {
-                reg.zohoSheetSyncedAt = new Date();
-                await reg.save();
-              }
-            } catch (_) {}
-          }
-          return NextResponse.json({ ok: true });
-        }
-      }
-      return NextResponse.json({ ok: true });
-    }
+    const seasonId = resolveSeasonIdFromNotes(notes);
 
     if (isSuccessEvent) {
-      let registration = null;
-      if (paymentLinkId) {
-        registration = await CategoryRegistration.findOne({ paymentLinkId });
-      }
+      let registration = await findRegistrationForWebhook({
+        paymentLinkId,
+        clerkUserId,
+        category,
+        seasonId,
+      });
 
       if (!registration && clerkUserId && category) {
-        registration = await CategoryRegistration.findOne({ clerkUserId, category });
+        const activeSeason = await getActiveSeasonOptional();
+        if (activeSeason) {
+          registration = await CategoryRegistration.create({
+            ...buildRegistrationCreatePayload({
+              clerkUserId,
+              email: notes.email || 'unknown@example.com',
+              category,
+              season: activeSeason,
+            }),
+            paymentStatus: 'success',
+            paymentOrderId: paymentId,
+            paymentLinkId,
+            paymentAmount: notes.paymentAmount || undefined,
+            zohoFormData: notes.zohoFormData ? JSON.parse(notes.zohoFormData) : {},
+            registeredAt: new Date(),
+          });
+        }
       }
 
-      if (!registration && clerkUserId) {
-        registration = await CategoryRegistration.findOne({
-          clerkUserId,
-          paymentStatus: { $in: ['pending', 'initiated'] },
-        }).sort({ createdAt: -1 });
-      }
-
-      if (!registration) {
-        registration = await CategoryRegistration.create({
-          clerkUserId: clerkUserId || 'unknown',
-          category: category || 'unknown',
-          email: notes.email || 'unknown@example.com',
-          paymentStatus: 'success',
-          paymentOrderId: paymentId,
-          paymentLinkId: paymentLinkId,
-          paymentAmount: notes.paymentAmount || undefined,
-          zohoFormData: notes.zohoFormData ? JSON.parse(notes.zohoFormData) : {},
-          registeredAt: new Date(),
-        });
-      } else {
+      if (registration) {
         const result = await markSuccess(registration, {
           paymentId,
           paymentLinkId,
           notes,
           paidAmountPaise,
         });
-        if (!result.ok) {
-          return NextResponse.json({ ok: true });
+        if (result.ok) {
+          await syncZohoIfNeeded(registration, event);
         }
-      }
-
-      try {
-        if (registration.paymentStatus === 'success' && !registration.zohoSheetSyncedAt && event === 'payment_link.paid') {
-          const syncRes = await syncRegistrationToZohoSheet(registration);
-          if (syncRes?.ok) {
-            registration.zohoSheetSyncedAt = new Date();
-            registration.zohoSheetLastError = undefined;
-            await registration.save();
-          } else if (!syncRes?.skipped) {
-            registration.zohoSheetLastError = String(syncRes?.error || 'Zoho sheet sync failed');
-            await registration.save();
-          }
-        }
-      } catch (e) {
-        try {
-          registration.zohoSheetLastError = String(e?.message || e);
-          await registration.save();
-        } catch (_) {}
       }
     } else if (isFailureEvent && paymentLinkId) {
       const reg = await CategoryRegistration.findOne({ paymentLinkId });

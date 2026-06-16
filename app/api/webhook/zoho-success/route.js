@@ -1,7 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect.js';
 import CategoryRegistration from '@/lib/categoryRegistrationModel.js';
 import { secureCompare } from '@/lib/secureCompare.js';
+import { getActiveSeasonOptional } from '@/lib/seasonService.js';
+import { buildRegistrationCreatePayload } from '@/lib/registrationService.js';
 
 export async function POST(request) {
   try {
@@ -38,9 +40,13 @@ export async function POST(request) {
 
     await dbConnect();
 
+    const activeSeason = await getActiveSeasonOptional();
+    const seasonFilter = activeSeason ? { seasonId: activeSeason._id } : {};
+
     const existingRegistration = await CategoryRegistration.findOne({
       clerkUserId,
       category,
+      ...seasonFilter,
     });
 
     if (existingRegistration) {
@@ -60,10 +66,17 @@ export async function POST(request) {
       });
     }
 
+    if (!activeSeason) {
+      return NextResponse.json({ error: 'No active registration season configured' }, { status: 503 });
+    }
+
     const newRegistration = await CategoryRegistration.create({
-      clerkUserId,
-      email,
-      category,
+      ...buildRegistrationCreatePayload({
+        clerkUserId,
+        email,
+        category,
+        season: activeSeason,
+      }),
       paymentStatus: 'pending',
       transactionId,
       zohoFormData: {
@@ -75,6 +88,7 @@ export async function POST(request) {
 
     console.log('[zoho-success] Created pending registration:', {
       category,
+      season: activeSeason.slug,
       registrationId: String(newRegistration._id),
     });
 

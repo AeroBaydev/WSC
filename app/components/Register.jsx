@@ -19,6 +19,15 @@ export default function Register() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [userCategories, setUserCategories] = useState([])
+  const [activeSeason, setActiveSeason] = useState(null)
+
+  const soarFestLabel = useMemo(() => {
+    return activeSeason?.year ? `SoarFest ${activeSeason.year}` : "SoarFest"
+  }, [activeSeason])
+
+  const activeSeasonLabel = useMemo(() => {
+    return activeSeason?.name || (activeSeason?.year ? `Season ${activeSeason.year}` : null)
+  }, [activeSeason])
 
   useEffect(() => {
     const checkRegistration = async () => {
@@ -32,13 +41,13 @@ export default function Register() {
             setIsRegistered(true)
           }
 
-          // Fetch user's category registrations from the new API
           const categoriesRes = await fetch("/api/check-category-registration", {
             method: "GET",
           })
           const categoriesData = await categoriesRes.json()
           if (categoriesData.success) {
             setUserCategories(categoriesData.registrations || [])
+            setActiveSeason(categoriesData.activeSeason || null)
           }
         } catch (err) {
           console.error("Error checking registration:", err)
@@ -425,7 +434,7 @@ export default function Register() {
                     : "text-gray-600 hover:text-gray-900"
                 }`}
               >
-                SoarFest 2025
+                {soarFestLabel}
               </button>
             </div>
           </div>
@@ -568,7 +577,7 @@ export default function Register() {
                         : "text-white hover:bg-white/10"
                     }`}
                   >
-                    SoarFest 2025
+                    {soarFestLabel}
                   </button>
                 </div>
               </div>
@@ -761,7 +770,7 @@ export default function Register() {
                           : "text-gray-600 hover:text-gray-900"
                       }`}
                     >
-                      SoarFest 2025
+                      {soarFestLabel}
                     </button>
                   </div>
                 </div>
@@ -776,7 +785,7 @@ export default function Register() {
                     </div>
                   ) : (
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-2xl mx-auto">
-                      <h4 className="font-bold text-blue-900 mb-2">SoarFest 2025</h4>
+                      <h4 className="font-bold text-blue-900 mb-2">{soarFestLabel}</h4>
                       <p className="text-blue-800 text-sm">
                         National Aeromodelling Competition - Gliders, Rockets, Drones & RC Planes
                       </p>
@@ -991,6 +1000,16 @@ export default function Register() {
                 <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                   Choose your category from World Skill Challenge or SoarFest and compete for exciting cash prizes
                 </p>
+                {activeSeasonLabel && (
+                  <p className="text-sm text-orange-700 font-medium mt-3">
+                    Registering for: {activeSeasonLabel}
+                  </p>
+                )}
+                <p className="text-sm text-gray-500 mt-3">
+                  <Link href="/profile" className="text-orange-700 font-semibold hover:underline">
+                    View all past season registrations
+                  </Link>
+                </p>
                 <div className="mt-6 bg-orange-50 border border-orange-200 rounded-lg p-4">
                   <p className="text-orange-700 font-semibold">Kudos for taking the first step towards becoming an innovator! 🌟 We’re currently gearing up for the regionals and nationals, and we’d be thrilled to see you at the event! 🚀👏</p>
                 </div>
@@ -1017,7 +1036,7 @@ export default function Register() {
                         : "text-gray-600 hover:text-gray-900"
                     }`}
                   >
-                    SoarFest 2025
+                    {soarFestLabel}
                   </button>
                 </div>
               </div>
