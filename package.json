@@ -9,7 +9,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate:seasons": "node scripts/migrate-seasons.mjs",
+    "migrate:seasons:dry-run": "node scripts/migrate-seasons.mjs --dry-run",
+    "migrate:seasons:all": "node scripts/migrate-seasons.mjs --all",
+    "migrate:seasons:swap-indexes": "node scripts/migrate-seasons.mjs --swap-indexes"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.39.2",
